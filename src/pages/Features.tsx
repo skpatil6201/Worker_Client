@@ -58,15 +58,13 @@ export default function Features() {
       <div className="relative container mx-auto max-w-7xl px-6">
         {/* Heading */}
         <div className="mb-16 text-center">
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-300 bg-cyan-100 px-4 py-1 text-xs font-semibold tracking-[0.25em] text-cyan-700 uppercase">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-1.5 text-xs font-semibold tracking-wider text-blue-700 uppercase">
             Services
           </span>
-          <h1 className="mb-4 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
-            <span className="bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500 bg-clip-text text-transparent">
-              Our Financial Expertise
-            </span>
+          <h1 className="mb-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
+            Our Financial Expertise
           </h1>
-          <p className="mx-auto max-w-2xl text-base sm:text-lg text-gray-700">
+          <p className="mx-auto max-w-2xl text-base sm:text-lg text-gray-600 leading-relaxed">
             End‑to‑end accounting, auditing, taxation and consulting support designed to keep your business compliant,
             profitable and future‑ready.
           </p>
@@ -79,47 +77,34 @@ export default function Features() {
               key={index}
               className="group relative rounded-3xl p-[1px] transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.02]"
             >
-              {/* Outer animated gradient border */}
-              <div
-                className={`absolute inset-0 rounded-3xl bg-gradient-to-tr ${service.color} opacity-40 blur-xl group-hover:opacity-60 group-hover:blur-2xl transition-all duration-500`}
-              />
-
               {/* Glass card */}
-              <div className="relative flex h-full flex-col rounded-3xl bg-white/90 px-8 py-9 shadow-xl backdrop-blur-2xl border border-cyan-200">
+              <div className="relative flex h-full flex-col rounded-xl bg-white px-8 py-8 shadow-md border border-gray-200 group-hover:shadow-xl transition-all duration-300">
                 {/* Top row: icon + title */}
-                <div className="mb-6 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr ${service.color} text-2xl shadow-lg shadow-black/40 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
-                    >
-                      {service.icon}
-                    </div>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">
-                      {service.title}
-                    </h3>
+                <div className="mb-6 flex items-center gap-4">
+                  <div
+                    className={`flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${service.color} text-2xl shadow-sm group-hover:scale-105 transition-all duration-300`}
+                  >
+                    {service.icon}
                   </div>
-                  <span className="hidden text-xs font-medium text-gray-500 sm:inline-flex">
-                    {index + 1 < 10 ? `0${index + 1}` : index + 1}
-                  </span>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    {service.title}
+                  </h3>
                 </div>
 
                 {/* Bullet list */}
-                <ul className="space-y-3 text-sm sm:text-base text-gray-700">
+                <ul className="space-y-3 text-base text-gray-600">
                   {service.items.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-3 transition-colors duration-300 group-hover:text-gray-900"
+                      className="flex items-start gap-3"
                     >
-                      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-cyan-100 text-[11px] font-bold text-cyan-600 ring-1 ring-cyan-300 group-hover:bg-cyan-400 group-hover:text-white">
-                        ✓
-                      </span>
+                      <svg className="mt-0.5 h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                      </svg>
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-
-                {/* Bottom accent line */}
-                <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-cyan-300 to-transparent group-hover:from-cyan-400 group-hover:to-cyan-300" />
               </div>
             </div>
           ))}
