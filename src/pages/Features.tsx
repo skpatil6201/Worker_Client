@@ -2,7 +2,7 @@ export default function Features() {
   const services = [
     {
       title: "Outsourced Accounting",
-      color: "from-indigo-500 via-sky-500 to-purple-500",
+      color: "from-blue-400 via-cyan-400 to-teal-400",
       icon: "📊",
       items: [
         "Bookkeeping",
@@ -14,7 +14,7 @@ export default function Features() {
     },
     {
       title: "Auditing Services",
-      color: "from-purple-500 via-fuchsia-500 to-pink-500",
+      color: "from-cyan-400 via-sky-400 to-blue-400",
       icon: "🧾",
       items: [
         "Internal Audits",
@@ -28,7 +28,7 @@ export default function Features() {
     },
     {
       title: "Taxation Services",
-      color: "from-pink-500 via-rose-500 to-amber-500",
+      color: "from-teal-400 via-emerald-400 to-green-400",
       icon: "🧮",
       items: [
         "GST Registration & Filing",
@@ -40,7 +40,7 @@ export default function Features() {
     },
     {
       title: "Financial Consulting",
-      color: "from-blue-500 via-cyan-500 to-indigo-500",
+      color: "from-sky-400 via-blue-400 to-indigo-400",
       icon: "💼",
       items: [
         "Budgeting & Forecasting",
@@ -53,26 +53,20 @@ export default function Features() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-slate-950 py-24 overflow-hidden">
-      {/* Animated gradient backdrop */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-950 to-slate-950" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#4f46e533_0,_transparent_55%),radial-gradient(circle_at_bottom,_#ec489933_0,_transparent_55%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b55_1px,transparent_1px),linear-gradient(to_bottom,#02061766_1px,transparent_1px)] bg-[size:72px_72px] opacity-40" />
-      </div>
+    <div className="relative min-h-screen bg-gray-50 py-24 overflow-hidden">
 
       <div className="relative container mx-auto max-w-7xl px-6">
         {/* Heading */}
         <div className="mb-16 text-center">
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-500/40 bg-indigo-500/10 px-4 py-1 text-xs font-semibold tracking-[0.25em] text-indigo-200 uppercase">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-300 bg-cyan-100 px-4 py-1 text-xs font-semibold tracking-[0.25em] text-cyan-700 uppercase">
             Services
           </span>
           <h1 className="mb-4 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
-            <span className="bg-gradient-to-r from-indigo-300 via-sky-300 to-pink-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500 bg-clip-text text-transparent">
               Our Financial Expertise
             </span>
           </h1>
-          <p className="mx-auto max-w-2xl text-base sm:text-lg text-slate-200/85">
+          <p className="mx-auto max-w-2xl text-base sm:text-lg text-gray-700">
             End‑to‑end accounting, auditing, taxation and consulting support designed to keep your business compliant,
             profitable and future‑ready.
           </p>
@@ -87,11 +81,11 @@ export default function Features() {
             >
               {/* Outer animated gradient border */}
               <div
-                className={`absolute inset-0 rounded-3xl bg-gradient-to-tr ${service.color} opacity-70 blur-xl group-hover:opacity-100 group-hover:blur-2xl transition-all duration-500`}
+                className={`absolute inset-0 rounded-3xl bg-gradient-to-tr ${service.color} opacity-40 blur-xl group-hover:opacity-60 group-hover:blur-2xl transition-all duration-500`}
               />
 
               {/* Glass card */}
-              <div className="relative flex h-full flex-col rounded-3xl bg-slate-900/70 px-8 py-9 shadow-2xl backdrop-blur-2xl border border-slate-700/70">
+              <div className="relative flex h-full flex-col rounded-3xl bg-white/90 px-8 py-9 shadow-xl backdrop-blur-2xl border border-cyan-200">
                 {/* Top row: icon + title */}
                 <div className="mb-6 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
@@ -100,23 +94,23 @@ export default function Features() {
                     >
                       {service.icon}
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-slate-50">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-800">
                       {service.title}
                     </h3>
                   </div>
-                  <span className="hidden text-xs font-medium text-slate-300/80 sm:inline-flex">
+                  <span className="hidden text-xs font-medium text-gray-500 sm:inline-flex">
                     {index + 1 < 10 ? `0${index + 1}` : index + 1}
                   </span>
                 </div>
 
                 {/* Bullet list */}
-                <ul className="space-y-3 text-sm sm:text-base text-slate-200/90">
+                <ul className="space-y-3 text-sm sm:text-base text-gray-700">
                   {service.items.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-3 transition-colors duration-300 group-hover:text-slate-50"
+                      className="flex items-start gap-3 transition-colors duration-300 group-hover:text-gray-900"
                     >
-                      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-900/70 text-[11px] font-bold text-indigo-300 ring-1 ring-indigo-400/50 group-hover:bg-indigo-400 group-hover:text-slate-950">
+                      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-cyan-100 text-[11px] font-bold text-cyan-600 ring-1 ring-cyan-300 group-hover:bg-cyan-400 group-hover:text-white">
                         ✓
                       </span>
                       <span>{item}</span>
@@ -125,7 +119,7 @@ export default function Features() {
                 </ul>
 
                 {/* Bottom accent line */}
-                <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-slate-500/60 to-transparent group-hover:from-slate-500/60 group-hover:to-slate-500/40" />
+                <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-cyan-300 to-transparent group-hover:from-cyan-400 group-hover:to-cyan-300" />
               </div>
             </div>
           ))}
