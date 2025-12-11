@@ -4,13 +4,50 @@ import { Link } from "react-router-dom";
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
+    userType: "admin" as "admin" | "firm" | "candidate"
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login:", formData);
-    alert("Login functionality - connect to your auth system");
+    
+    let endpoint = "";
+    switch (formData.userType) {
+      case "admin":
+        endpoint = "http://localhost:8080/api/admins/login";
+        break;
+      case "firm":
+        endpoint = "http://localhost:8080/api/firms/login";
+        break;
+      case "candidate":
+        endpoint = "http://localhost:8080/api/candidates/login";
+        break;
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          username: formData.userType === 'admin' ? formData.email : undefined
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`Welcome ${data.admin?.username || data.firm?.firmName || data.candidate?.fullName}!`);
+        // Redirect to appropriate dashboard
+      } else {
+        alert('Invalid credentials');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error connecting to server');
+    }
   };
 
   return (
@@ -33,13 +70,31 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                Email
+                Login As
               </label>
-              <input
-                type="email"
+              <select
                 required
                 className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-200"
-                placeholder="you@example.com"
+                value={formData.userType}
+                onChange={(e) =>
+                  setFormData({ ...formData, userType: e.target.value as any })
+                }
+              >
+                <option value="admin">Admin</option>
+                <option value="firm">CA Firm</option>
+                <option value="candidate">Candidate</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                {formData.userType === 'admin' ? 'Username or Email' : 'Email'}
+              </label>
+              <input
+                type={formData.userType === 'admin' ? 'text' : 'email'}
+                required
+                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-200"
+                placeholder={formData.userType === 'admin' ? 'admin or admin@example.com' : 'you@example.com'}
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
@@ -62,6 +117,13 @@ export default function Login() {
                 }
               />
             </div>
+
+            {formData.userType === 'admin' && (
+              <div className="bg-blue-50 p-3 rounded-lg text-sm">
+                <p className="text-blue-800 font-medium">Default Admin Credentials:</p>
+                <p className="text-blue-700">Username: admin | Password: admin123</p>
+              </div>
+            )}
 
             <div className="flex items-center justify-between text-xs text-gray-600">
               <div className="flex items-center gap-2">

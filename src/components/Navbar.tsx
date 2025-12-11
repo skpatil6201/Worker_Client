@@ -66,47 +66,6 @@ export default function Navbar() {
                 Home
               </Link>
               
-              {/* Services Dropdown */}
-              <div className="relative group">
-                <button 
-                  className={`transition font-semibold text-sm uppercase flex items-center gap-1 ${
-                    location.pathname === '/features' 
-                      ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
-                >
-                  Services
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {servicesOpen && (
-                  <div 
-                    className="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg py-2 border border-gray-100"
-                    onMouseEnter={() => setServicesOpen(true)}
-                    onMouseLeave={() => setServicesOpen(false)}
-                  >
-                    <Link to="/features" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-green-600">
-                      All Services
-                    </Link>
-                    <Link to="/features" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-green-600">
-                      Accounting Services
-                    </Link>
-                    <Link to="/features" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-green-600">
-                      Audit & Assurance
-                    </Link>
-                    <Link to="/features" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-green-600">
-                      Taxation Services
-                    </Link>
-                    <Link to="/features" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-green-600">
-                      Consultancy
-                    </Link>
-                  </div>
-                )}
-              </div>
-
               <Link 
                 to="/about" 
                 className={`transition font-semibold text-sm uppercase ${
@@ -115,38 +74,20 @@ export default function Navbar() {
                     : 'text-gray-700 hover:text-green-600'
                 }`}
               >
-                About Us
+                About
               </Link>
+
               <Link 
-                to="/blogs" 
+                to="/features" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/blogs' 
+                  location.pathname === '/features' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
               >
-                Blogs
+                Services
               </Link>
-              <Link 
-                to="/careers" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/careers' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                Careers
-              </Link>
-              <Link 
-                to="/links" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/links' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                Links
-              </Link>
+              
               <Link 
                 to="/contact" 
                 className={`transition font-semibold text-sm uppercase ${
@@ -155,7 +96,46 @@ export default function Navbar() {
                     : 'text-gray-700 hover:text-green-600'
                 }`}
               >
-                Contact Us
+                Contact
+              </Link>
+
+              {/* Login Dropdown */}
+              <div className="relative group">
+                <button 
+                  className="transition font-semibold text-sm uppercase flex items-center gap-1 text-gray-700 hover:text-green-600"
+                  onMouseEnter={() => setServicesOpen(true)}
+                  onMouseLeave={() => setServicesOpen(false)}
+                >
+                  Login
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {servicesOpen && (
+                  <div 
+                    className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 border border-gray-100"
+                    onMouseEnter={() => setServicesOpen(true)}
+                    onMouseLeave={() => setServicesOpen(false)}
+                  >
+                    <Link to="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-green-600">
+                      Admin Login
+                    </Link>
+                    <Link to="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-green-600">
+                      Firm Login
+                    </Link>
+                    <Link to="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-green-600">
+                      Candidate Login
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Signup Button */}
+              <Link 
+                to="/signup" 
+                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition font-semibold text-sm uppercase"
+              >
+                Signup
               </Link>
             </div>
 
@@ -206,6 +186,17 @@ export default function Navbar() {
                   Home
                 </Link>
                 <Link 
+                  to="/about" 
+                  className={`transition font-semibold ${
+                    location.pathname === '/about' 
+                      ? 'text-green-600 font-bold' 
+                      : 'text-gray-700 hover:text-green-600'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  About
+                </Link>
+                <Link 
                   to="/features" 
                   className={`transition font-semibold ${
                     location.pathname === '/features' 
@@ -217,59 +208,37 @@ export default function Navbar() {
                   Services
                 </Link>
                 <Link 
-                  to="/about" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/about' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  About Us
-                </Link>
-                <Link 
-                  to="/blogs" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/blogs' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Blogs
-                </Link>
-                <Link 
-                  to="/careers" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/careers' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Careers
-                </Link>
-                <Link 
-                  to="/links" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/links' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Links
-                </Link>
-                <Link 
                   to="/contact" 
-                  className={`px-4 py-2 rounded-md transition text-center shadow-sm font-semibold ${
+                  className={`transition font-semibold ${
                     location.pathname === '/contact' 
+                      ? 'text-green-600 font-bold' 
+                      : 'text-gray-700 hover:text-green-600'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Contact
+                </Link>
+                <Link 
+                  to="/login" 
+                  className={`transition font-semibold ${
+                    location.pathname === '/login' 
+                      ? 'text-green-600 font-bold' 
+                      : 'text-gray-700 hover:text-green-600'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link 
+                  to="/signup" 
+                  className={`px-4 py-2 rounded-md transition text-center shadow-sm font-semibold ${
+                    location.pathname === '/signup' 
                       ? 'bg-green-700 text-white' 
                       : 'bg-green-600 text-white hover:bg-green-700'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
-                  Contact Us
+                  Signup
                 </Link>
               </div>
             </div>
