@@ -9,23 +9,64 @@ export default function Signup() {
     phone: "",
     email: "",
     password: "",
-    userType: "Worker" as "Worker" | "CA"
+    userType: "candidate" as "candidate" | "firm"
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    let endpoint = "";
+    let payload = {};
+
+    if (formData.userType === "candidate") {
+      endpoint = "http://localhost:8080/api/candidates/register";
+      payload = {
+        fullName: formData.name,
+        dateOfBirth: "1990-01-01", // Default value
+        gender: "Male", // Default value
+        mobileNumber: formData.phone,
+        email: formData.email,
+        password: formData.password,
+        address: formData.address,
+        highestQualification: "Graduate", // Default value
+        certifications: "None", // Default value
+        yearsOfExperience: "0-1", // Default value
+        currentPreviousEmployer: "",
+        positionHeld: "",
+        areasOfExpertise: [],
+        softwareProficiency: [],
+        documents: []
+      };
+    } else {
+      endpoint = "http://localhost:8080/api/firms/register";
+      payload = {
+        firmName: formData.name,
+        registrationNumber: "REG001", // Default value
+        dateOfRegistration: "2024-01-01", // Default value
+        panGstNumber: "PAN001", // Default value
+        firmType: "Partnership", // Default value
+        headOfficeAddress: formData.address,
+        cityStatePin: "City, State, 000000", // Default value
+        firmContactNumber: formData.phone,
+        email: formData.email,
+        password: formData.password,
+        partners: [],
+        areasOfPractice: [],
+        documents: []
+      };
+    }
+
     try {
-      const response = await fetch("http://localhost:8080/api/users", {
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
-        alert("Registration successful!");
+        alert("Registration successful! Please wait for verification.");
         navigate("/login");
       } else {
         alert("Registration failed");
@@ -166,7 +207,7 @@ export default function Signup() {
 
                 <div>
                   <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                    User Type *
+                    Registration Type *
                   </label>
                   <select
                     required
@@ -175,13 +216,19 @@ export default function Signup() {
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        userType: e.target.value as "Worker" | "CA"
+                        userType: e.target.value as "candidate" | "firm"
                       })
                     }
                   >
-                    <option value="Worker">Worker / Staff</option>
-                    <option value="CA">CA (Chartered Accountant)</option>
+                    <option value="candidate">Individual Candidate</option>
+                    <option value="firm">CA Firm Registration</option>
                   </select>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {formData.userType === "candidate" 
+                      ? "Register as an individual professional" 
+                      : "Register your CA firm for business services"
+                    }
+                  </p>
                 </div>
 
                 <button
@@ -191,6 +238,19 @@ export default function Signup() {
                   Sign Up
                 </button>
               </form>
+
+              <div className="mt-4 text-center text-xs text-slate-500">
+                <p>Need detailed registration?</p>
+                <div className="flex gap-2 justify-center mt-1">
+                  <Link to="/firm-registration" className="text-indigo-600 hover:underline">
+                    Complete Firm Form
+                  </Link>
+                  <span>|</span>
+                  <Link to="/candidate-registration" className="text-indigo-600 hover:underline">
+                    Complete Candidate Form
+                  </Link>
+                </div>
+              </div>
 
               <p className="mt-6 text-center text-sm text-slate-600">
                 Already have an account?{" "}

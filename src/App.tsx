@@ -11,6 +11,8 @@ import Signup from './pages/Signup';
 import Blogs from './pages/Blogs';
 import Careers from './pages/Careers';
 import Links from './pages/Links';
+import FirmRegistration from './pages/FirmRegistration';
+import CandidateRegistration from './pages/CandidateRegistration';
 import './App.css';
 
 function App() {
@@ -29,6 +31,10 @@ function App() {
             <Route path="/blogs" element={<Blogs />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/links" element={<Links />} />
+            
+            {/* Registration Routes */}
+            <Route path="/firm-registration" element={<FirmRegistration />} />
+            <Route path="/candidate-registration" element={<CandidateRegistration />} />
           </Routes>
         </main>
         <Footer />
