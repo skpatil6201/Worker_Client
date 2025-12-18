@@ -13,6 +13,9 @@ import Careers from './pages/Careers';
 import Links from './pages/Links';
 import FirmRegistration from './pages/FirmRegistration';
 import CandidateRegistration from './pages/CandidateRegistration';
+import AdminDashboard from './pages/AdminDashboard';
+import FirmDashboard from './pages/FirmDashboard';
+import CandidateDashboard from './pages/CandidateDashboard';
 import './App.css';
 
 function App() {
@@ -32,9 +35,14 @@ function App() {
             <Route path="/careers" element={<Careers />} />
             <Route path="/links" element={<Links />} />
             
-            {/* Registration Routes */}
-            <Route path="/firm-registration" element={<FirmRegistration />} />
-            <Route path="/candidate-registration" element={<CandidateRegistration />} />
+            {/* Registration Routes - Redirect to main signup */}
+            <Route path="/firm-registration" element={<Signup />} />
+            <Route path="/candidate-registration" element={<Signup />} />
+            
+            {/* Dashboard Routes */}
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/firm-dashboard" element={<FirmDashboard />} />
+            <Route path="/candidate-dashboard" element={<CandidateDashboard />} />
           </Routes>
         </main>
         <Footer />

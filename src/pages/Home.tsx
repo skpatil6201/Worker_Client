@@ -1,8 +1,129 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      id: 1,
+      title: "Professional CA Services",
+      subtitle: "Expert Chartered Accountants for Your Business",
+      description: "Get comprehensive accounting, auditing, and taxation services from qualified professionals",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      buttonText: "Find CA Services",
+      buttonLink: "/features"
+    },
+    {
+      id: 2,
+      title: "Tax Compliance Made Easy",
+      subtitle: "Stay Compliant with Expert Guidance",
+      description: "Ensure your business meets all tax obligations with our professional tax consultancy services",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      buttonText: "Learn More",
+      buttonLink: "/about"
+    },
+    {
+      id: 3,
+      title: "Skilled Financial Workforce",
+      subtitle: "Connect with Qualified Professionals",
+      description: "Access a network of verified accountants and financial experts for your business needs",
+      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      buttonText: "Join Network",
+      buttonLink: "/signup"
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 text-gray-800 overflow-hidden">
+      {/* Image Carousel */}
+      <div className="relative w-full h-96 md:h-[500px] lg:h-[600px] overflow-hidden mt-24">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <div
+              className="w-full h-full bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${slide.image})` }}
+            >
+              <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+              <div className="relative z-10 flex items-center justify-center h-full">
+                <div className="text-center text-white px-4 max-w-4xl">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                    {slide.title}
+                  </h1>
+                  <h2 className="text-xl md:text-2xl lg:text-3xl mb-6 text-gray-200">
+                    {slide.subtitle}
+                  </h2>
+                  <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+                    {slide.description}
+                  </p>
+                  <Link
+                    to={slide.buttonLink}
+                    className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105"
+                  >
+                    {slide.buttonText}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition duration-300"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition duration-300"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Dots Indicator */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full transition duration-300 ${
+                index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
       {/* Background glow and grid */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-blue-100/50 blur-3xl" />

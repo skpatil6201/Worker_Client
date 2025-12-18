@@ -51,135 +51,162 @@ export default function Login() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 overflow-hidden">
-      {/* Main card */}
-      <div className="relative w-full max-w-md">
-        <div className="rounded-xl border border-gray-200 bg-white px-8 py-10 shadow-lg">
-          <div className="mb-6 text-center">
-            <span className="mb-3 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-blue-700">
-              Welcome back
-            </span>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-              Login to your account
-            </h2>
-            <p className="mt-2 text-base text-gray-600">
-              Access your CA Worker Platform dashboard to manage clients, work and finances.
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
+            Login
+          </h1>
+          <p className="text-center text-gray-600 mb-8">
+            Access your account to continue
+          </p>
+
+          {/* Login Type Selection */}
+          <div className="mb-8">
+            <label className="mb-4 block text-lg font-semibold text-gray-700">
+              Login As *
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, userType: "admin" })}
+                className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                  formData.userType === "admin"
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                }`}
+              >
+                Admin
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, userType: "firm" })}
+                className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                  formData.userType === "firm"
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                }`}
+              >
+                CA Firm
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, userType: "candidate" })}
+                className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                  formData.userType === "candidate"
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                }`}
+              >
+                Candidate
+              </button>
+            </div>
+            <p className="mt-3 text-sm text-gray-500">
+              {formData.userType === "admin" && "Access admin dashboard and manage the platform"}
+              {formData.userType === "firm" && "Access your firm dashboard and manage clients"}
+              {formData.userType === "candidate" && "Access your profile and find opportunities"}
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                Login As
-              </label>
-              <select
-                required
-                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-200"
-                value={formData.userType}
-                onChange={(e) =>
-                  setFormData({ ...formData, userType: e.target.value as any })
-                }
-              >
-                <option value="admin">Admin</option>
-                <option value="firm">CA Firm</option>
-                <option value="candidate">Candidate</option>
-              </select>
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Login Credentials */}
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold text-gray-800 mb-6">Login Credentials</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    {formData.userType === 'admin' ? 'Username or Email' : 'Email'} *
+                  </label>
+                  <input
+                    type={formData.userType === 'admin' ? 'text' : 'email'}
+                    required
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder={formData.userType === 'admin' ? 'admin or admin@example.com' : 'you@example.com'}
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                {formData.userType === 'admin' ? 'Username or Email' : 'Email'}
-              </label>
-              <input
-                type={formData.userType === 'admin' ? 'text' : 'email'}
-                required
-                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-200"
-                placeholder={formData.userType === 'admin' ? 'admin or admin@example.com' : 'you@example.com'}
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </div>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                    Password *
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  />
+                </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-200"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-              />
-            </div>
+                {formData.userType === 'admin' && (
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 className="text-sm font-semibold text-blue-800 mb-2">Default Admin Credentials:</h4>
+                    <p className="text-sm text-blue-700">Username: <span className="font-mono">admin</span></p>
+                    <p className="text-sm text-blue-700">Password: <span className="font-mono">admin123</span></p>
+                  </div>
+                )}
 
-            {formData.userType === 'admin' && (
-              <div className="bg-blue-50 p-3 rounded-lg text-sm">
-                <p className="text-blue-800 font-medium">Default Admin Credentials:</p>
-                <p className="text-blue-700">Username: admin | Password: admin123</p>
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center text-sm">
+                    <input
+                      type="checkbox"
+                      className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-gray-700">Remember me</span>
+                  </label>
+                  <button
+                    type="button"
+                    className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
               </div>
-            )}
-
-            <div className="flex items-center justify-between text-xs text-gray-600">
-              <div className="flex items-center gap-2">
-                <input
-                  id="remember"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 bg-white text-cyan-500 focus:ring-cyan-300"
-                />
-                <label htmlFor="remember" className="cursor-pointer select-none">
-                  Remember me
-                </label>
-              </div>
-              <button
-                type="button"
-                className="text-cyan-600 hover:text-cyan-700 hover:underline underline-offset-2"
-              >
-                Forgot password?
-              </button>
             </div>
 
             <button
               type="submit"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:-translate-y-0.5"
+              className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition font-semibold text-lg"
             >
               Login
-              <span className="transition-transform group-hover:translate-x-1">
-                →
-              </span>
             </button>
           </form>
 
-          <div className="mt-6 flex items-center justify-between text-sm text-gray-400">
-            <span className="h-px flex-1 bg-gray-200" />
-            <span className="px-3">OR</span>
-            <span className="h-px flex-1 bg-gray-200" />
+          {/* Alternative Login Options */}
+          <div className="mt-8">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                type="button"
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition font-medium"
+              >
+                <div className="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold">
+                  G
+                </div>
+                Continue with Google
+              </button>
+            </div>
           </div>
 
-          <div className="mt-4 flex flex-col gap-3">
-            <button
-              type="button"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-700 font-medium shadow-sm transition hover:bg-gray-50"
-            >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-100 text-xs font-bold">
-                G
-              </span>
-              Continue with Google
-            </button>
-          </div>
-
-          <p className="mt-6 text-center text-base text-gray-600">
-            Don&apos;t have an account?{" "}
+          <p className="mt-8 text-center text-sm text-gray-600">
+            Don't have an account?{" "}
             <Link
               to="/signup"
-              className="font-semibold text-blue-600 hover:text-blue-700 hover:underline underline-offset-2"
+              className="font-semibold text-blue-600 hover:text-blue-700 hover:underline"
             >
-              Sign up
+              Sign up here
             </Link>
           </p>
         </div>
