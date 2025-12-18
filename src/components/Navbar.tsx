@@ -49,8 +49,12 @@ export default function Navbar() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center gap-3">
               <img className='h-16' src={logo} alt="S.K. Associates" />
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold text-gray-800">S K ASSOCIATES</span>
+                <span className="text-xs text-gray-600 uppercase tracking-wider">Tax Consultancy & Auditing</span>
+              </div>
             </Link>
             
             {/* Desktop Menu */}
