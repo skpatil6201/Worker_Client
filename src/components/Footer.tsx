@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="text-start">
             <h3 className="text-lg font-semibold mb-4 text-white">ABOUT</h3>
             <p className="text-gray-300 text-sm leading-relaxed">
-              S.K. Associates LLP is a CA in Pune, a professionally managed firm 
+              S.K. Associates is a Cunsalatancy Firm in Pune, a professionally managed firm 
               catering to domestic and international clients with a wide range of services in 
               domestic and international taxation, regulatory and advisory services, and 
               cross-border transaction-related services.
@@ -105,8 +105,8 @@ export default function Footer() {
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
                 </svg>
                 <p className="text-gray-300">
-                  Office No:- B-2240, Ganga Trueno Business Park, New Airport Road, Near 
-                  Dorabjee's Viman nagar, Pune-411014
+                 Teerth Technospace,
+Baner, Pune – 411045
                 </p>
               </div>
               
@@ -114,8 +114,8 @@ export default function Footer() {
                 <svg className="w-4 h-4 text-gray-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                 </svg>
-                <a href="tel:+917875037800" className="text-gray-300 hover:text-white transition-colors">
-                  +91-7875037800
+                <a href="tel:+917276469398" className="text-gray-300 hover:text-white transition-colors">
+                  +91-7276469398
                 </a>
               </div>
               
@@ -123,8 +123,8 @@ export default function Footer() {
                 <svg className="w-4 h-4 text-gray-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                 </svg>
-                <a href="tel:+919020299928000" className="text-gray-300 hover:text-white transition-colors">
-                  +91-020-29992800
+                <a href="tel:+919730517424" className="text-gray-300 hover:text-white transition-colors">
+                   +91-9730517424
                 </a>
               </div>
               
@@ -133,8 +133,8 @@ export default function Footer() {
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                 </svg>
-                <a href="mailto:cajitentelisara@gmail.com" className="text-gray-300 hover:text-white transition-colors">
-                  cajitentelisara@gmail.com
+                <a href="mailto: info.skassociates4@gmail.com" className="text-gray-300 hover:text-white transition-colors">
+                  info.skassociates4@gmail.com
                 </a>
               </div>
             </div>
@@ -145,7 +145,7 @@ export default function Footer() {
         <div className="border-t border-gray-600 mt-12 ml-4  pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              Copyrights © All rights reserved to S.K. Associates LLP
+              Copyrights © All rights reserved to S.K. Infotech Solutions
             </p>
             {/* <div className="flex items-center gap-4">
               <a 

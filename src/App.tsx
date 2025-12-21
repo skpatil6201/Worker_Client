@@ -4,6 +4,8 @@ import Footer from './components/Footer';
 import ContactWidget from './components/ContactWidget';
 import Home from './pages/Home';
 import About from './pages/About';
+import Services from './pages/Services';
+import Gallery from './pages/Gallery';
 import Features from './pages/Features';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
@@ -27,6 +29,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/gallery" element={<Gallery />} />
             <Route path="/features" element={<Features />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />

@@ -29,22 +29,30 @@ export default function Contact() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gray-50 py-24 overflow-hidden">
-
-      <div className="relative container mx-auto max-w-6xl px-6">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-1.5 text-xs font-semibold tracking-wider text-blue-700 uppercase">
-            Get in touch
-          </span>
-          <h1 className="mb-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
-            Contact S.K. ASSOCIATES
-          </h1>
-          <p className="mx-auto max-w-2xl text-base sm:text-lg text-gray-600 leading-relaxed">
-            Complete Accounting, Auditing, Taxation and Financial Consulting support. Reach out and the team will get
-            back as soon as possible.
-          </p>
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 text-gray-800">
+      {/* Hero Section */}
+      <div className="relative w-full h-64 md:h-80 mt-20">
+        <img 
+          src="/img1.jpeg" 
+          alt="Contact Us"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white px-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
+            <p className="text-xl">Get in Touch with Our Expert Team</p>
+          </div>
         </div>
+      </div>
+
+      {/* Background glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-blue-100/50 blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-indigo-100/50 blur-3xl" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-16">
 
         <div className="grid gap-12 lg:grid-cols-2">
           {/* Contact info card */}

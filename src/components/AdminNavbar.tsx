@@ -2,15 +2,14 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '../assets/logoss.png';
 
-export default function Navbar() {
+export default function AdminNavbar() {
   const [isOpen, setIsOpen] = useState(false);
-
   const location = useLocation();
 
   return (
-    <nav className="fixed w-full top-0 z-50 ">
+    <nav className="fixed w-full top-0 z-50">
       {/* Top Bar */}
-      <div className="bg-slate-800   text-white py-2">
+      <div className="bg-slate-800 text-white py-2">
         <div className="container ml-8 mr-8 mx-auto px-4">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-6">
@@ -29,16 +28,7 @@ export default function Navbar() {
               </a>
             </div>
             <div className="hidden md:flex items-center gap-4">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-              </a>
+              <span className="text-xs bg-red-600 px-2 py-1 rounded">ADMIN</span>
             </div>
           </div>
         </div>
@@ -49,93 +39,77 @@ export default function Navbar() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/admin-dashboard" className="flex items-center gap-3">
               <img className='h-16' src={logo} alt="S.K. Associates" />
               <div className="flex flex-col">
                 <span className="text-2xl font-bold text-gray-800">S.K. ASSOCIATES</span>
-                <p className="text-xs text-gray-600 text-l tracking-wider">Your Success,Our Expertise</p>
+                <p className="text-xs text-gray-600 text-l tracking-wider">Admin Panel</p>
               </div>
             </Link>
             
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-8">
               <Link 
+                to="/admin-dashboard" 
+                className={`transition font-semibold text-sm uppercase ${
+                  location.pathname === '/admin-dashboard' 
+                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                    : 'text-gray-700 hover:text-green-600'
+                }`}
+              >
+                Dashboard
+              </Link>
+              
+              <Link 
+                to="/admin-dashboard" 
+                className={`transition font-semibold text-sm uppercase ${
+                  location.pathname === '/manage-firms' 
+                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                    : 'text-gray-700 hover:text-green-600'
+                }`}
+              >
+                Manage Firms
+              </Link>
+
+              <Link 
+                to="/admin-dashboard" 
+                className={`transition font-semibold text-sm uppercase ${
+                  location.pathname === '/manage-candidates' 
+                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                    : 'text-gray-700 hover:text-green-600'
+                }`}
+              >
+                Manage Candidates
+              </Link>
+
+              <Link 
+                to="/admin-dashboard" 
+                className={`transition font-semibold text-sm uppercase ${
+                  location.pathname === '/reports' 
+                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                    : 'text-gray-700 hover:text-green-600'
+                }`}
+              >
+                Reports
+              </Link>
+              
+              <Link 
+                to="/admin-dashboard" 
+                className={`transition font-semibold text-sm uppercase ${
+                  location.pathname === '/settings' 
+                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                    : 'text-gray-700 hover:text-green-600'
+                }`}
+              >
+                Settings
+              </Link>
+
+              {/* Logout Link */}
+              <Link 
                 to="/" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
+                className="transition font-semibold text-sm uppercase text-red-600 hover:text-red-700"
               >
-                Home
-              </Link>
-              
-              <Link 
-                to="/about" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/about' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                About
-              </Link>
-
-              <Link 
-                to="/services" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/services' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                Services
-              </Link>
-
-              <Link 
-                to="/gallery" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/gallery' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                Gallery
-              </Link>
-              
-              <Link 
-                to="/contact" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/contact' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                Contact
-              </Link>
-
-              {/* Login Link */}
-              <Link 
-                to="/login" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/login' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                Login
-              </Link>
-
-              {/* Signup Link */}
-              <Link 
-                to="/signup" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/signup' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                Signup
+                Logout
               </Link>
             </div>
 
@@ -175,81 +149,50 @@ export default function Navbar() {
             <div className="lg:hidden pb-4 border-t border-gray-100 pt-4">
               <div className="flex flex-col space-y-3">
                 <Link 
+                  to="/admin-dashboard" 
+                  className={`transition font-semibold ${
+                    location.pathname === '/admin-dashboard' 
+                      ? 'text-green-600 font-bold' 
+                      : 'text-gray-700 hover:text-green-600'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  to="/admin-dashboard" 
+                  className="transition font-semibold text-gray-700 hover:text-green-600"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Manage Firms
+                </Link>
+                <Link 
+                  to="/admin-dashboard" 
+                  className="transition font-semibold text-gray-700 hover:text-green-600"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Manage Candidates
+                </Link>
+                <Link 
+                  to="/admin-dashboard" 
+                  className="transition font-semibold text-gray-700 hover:text-green-600"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Reports
+                </Link>
+                <Link 
+                  to="/admin-dashboard" 
+                  className="transition font-semibold text-gray-700 hover:text-green-600"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Settings
+                </Link>
+                <Link 
                   to="/" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
+                  className="transition font-semibold text-red-600 hover:text-red-700"
                   onClick={() => setIsOpen(false)}
                 >
-                  Home
-                </Link>
-                <Link 
-                  to="/about" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/about' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  About
-                </Link>
-                <Link 
-                  to="/services" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/services' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Services
-                </Link>
-                <Link 
-                  to="/gallery" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/gallery' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Gallery
-                </Link>
-                <Link 
-                  to="/contact" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/contact' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Contact
-                </Link>
-                <Link 
-                  to="/login" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/login' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link 
-                  to="/signup" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/signup' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Signup
+                  Logout
                 </Link>
               </div>
             </div>
