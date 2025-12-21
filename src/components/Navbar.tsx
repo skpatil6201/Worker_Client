@@ -1,11 +1,25 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../assets/logoss.png';
+import { isAuthenticated, getUserData, logout, getUserType } from '../utils/auth';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  const [userType, setUserType] = useState<string | null>(null);
 
   const location = useLocation();
+
+  useEffect(() => {
+    setIsLoggedIn(isAuthenticated());
+    setUserData(getUserData());
+    setUserType(getUserType());
+  }, [location]);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <nav className="fixed w-full top-0 z-50 ">
@@ -114,26 +128,50 @@ export default function Navbar() {
                 Contact
               </Link>
 
-              {/* Login Link */}
-              <Link 
-                to="/login" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/login' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
-              >
-                Login
-              </Link>
+              {/* Login/Logout Section */}
+              {isLoggedIn ? (
+                <div className="flex items-center space-x-4">
+                  <Link
+                    to={`/${userType}-dashboard`}
+                    className="transition font-semibold text-sm uppercase text-blue-600 hover:text-blue-700"
+                  >
+                    Dashboard
+                  </Link>
+                  <span className="text-sm text-gray-600">
+                    {userData?.username || userData?.firmName || userData?.fullName}
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="transition font-semibold text-sm uppercase text-red-600 hover:text-red-700"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <Link 
+                    to="/login" 
+                    className={`transition font-semibold text-sm uppercase ${
+                      location.pathname === '/login' 
+                        ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                        : 'text-gray-700 hover:text-green-600'
+                    }`}
+                  >
+                    Login
+                  </Link>
 
-              {/* Signup Link */}
-              <Link 
-                to="/signup" 
-                className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/signup' 
-                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
-                    : 'text-gray-700 hover:text-green-600'
-                }`}
+                  <Link 
+                    to="/signup" 
+                    className={`transition font-semibold text-sm uppercase ${
+                      location.pathname === '/signup' 
+                        ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                        : 'text-gray-700 hover:text-green-600'
+                    }`}
+                  >
+                    Signup
+                  </Link>
+                </>
+              )}
               >
                 Signup
               </Link>
