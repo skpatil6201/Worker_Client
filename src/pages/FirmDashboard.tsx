@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import FirmNavbar from "../components/FirmNavbar";
 
 interface JobPosting {
   _id: string;
@@ -131,33 +131,22 @@ export default function FirmDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Firm Dashboard</h1>
-              <p className="text-gray-600">Welcome, {firmData.firmName}</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowJobForm(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-              >
-                Post New Job
-              </button>
-              <Link
-                to="/login"
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-              >
-                Logout
-              </Link>
-            </div>
+      <FirmNavbar />
+      
+      <div className="pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Firm Dashboard</h1>
+            <p className="text-gray-600">Welcome, {firmData.firmName}</p>
           </div>
+          <button
+            onClick={() => setShowJobForm(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Post New Job
+          </button>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation Tabs */}
         <div className="mb-8">
           <nav className="flex space-x-8">
