@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     userType: "admin" as "admin" | "firm" | "candidate"
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
     let endpoint = "";
     switch (formData.userType) {
@@ -37,16 +40,41 @@ export default function Login() {
         })
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        alert(`Welcome ${data.admin?.username || data.firm?.firmName || data.candidate?.fullName}!`);
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Store token in localStorage
+        localStorage.setItem('token', data.data.token);
+        localStorage.setItem('userType', formData.userType);
+        
+        // Store user data
+        const userData = data.data.admin || data.data.firm || data.data.candidate;
+        localStorage.setItem('userData', JSON.stringify(userData));
+
+        // Show success message
+        const userName = userData.username || userData.firmName || userData.fullName;
+        alert(`Welcome back, ${userName}!`);
+
         // Redirect to appropriate dashboard
+        switch (formData.userType) {
+          case "admin":
+            navigate('/admin-dashboard');
+            break;
+          case "firm":
+            navigate('/firm-dashboard');
+            break;
+          case "candidate":
+            navigate('/candidate-dashboard');
+            break;
+        }
       } else {
-        alert('Invalid credentials');
+        alert(data.message || 'Invalid credentials');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Error connecting to server');
+      alert('Error connecting to server. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -170,9 +198,21 @@ export default function Login() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition font-semibold text-lg"
+              disabled={isLoading}
+              className={`w-full py-4 rounded-lg transition font-semibold text-lg ${
+                isLoading 
+                  ? 'bg-gray-400 text-gray-200 cursor-not-allowed' 
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
             >
-              Login
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Logging in...
+                </div>
+              ) : (
+                'Login'
+              )}
             </button>
           </form>
 

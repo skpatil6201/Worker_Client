@@ -61,7 +61,7 @@ export default function AdminNavbar() {
               </Link>
               
               <Link 
-                to="/admin-dashboard" 
+                to="/manage-firms" 
                 className={`transition font-semibold text-sm uppercase ${
                   location.pathname === '/manage-firms' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
@@ -72,7 +72,7 @@ export default function AdminNavbar() {
               </Link>
 
               <Link 
-                to="/admin-dashboard" 
+                to="/manage-candidates" 
                 className={`transition font-semibold text-sm uppercase ${
                   location.pathname === '/manage-candidates' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
@@ -83,7 +83,7 @@ export default function AdminNavbar() {
               </Link>
 
               <Link 
-                to="/admin-dashboard" 
+                to="/reports" 
                 className={`transition font-semibold text-sm uppercase ${
                   location.pathname === '/reports' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
@@ -94,7 +94,7 @@ export default function AdminNavbar() {
               </Link>
               
               <Link 
-                to="/admin-dashboard" 
+                to="/settings" 
                 className={`transition font-semibold text-sm uppercase ${
                   location.pathname === '/settings' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 

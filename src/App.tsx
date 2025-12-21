@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ContactWidget from './components/ContactWidget';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
@@ -18,6 +19,27 @@ import CandidateRegistration from './pages/CandidateRegistration';
 import AdminDashboard from './pages/AdminDashboard';
 import FirmDashboard from './pages/FirmDashboard';
 import CandidateDashboard from './pages/CandidateDashboard';
+
+// Admin Pages
+import ManageFirms from './pages/admin/ManageFirms';
+import ManageCandidates from './pages/admin/ManageCandidates';
+import Reports from './pages/admin/Reports';
+import Settings from './pages/admin/Settings';
+
+// Firm Pages
+import Clients from './pages/firm/Clients';
+import Projects from './pages/firm/Projects';
+import FindCandidates from './pages/firm/FindCandidates';
+import Billing from './pages/firm/Billing';
+import FirmProfile from './pages/firm/Profile';
+
+// Candidate Pages
+import FindJobs from './pages/candidate/FindJobs';
+import MyApplications from './pages/candidate/MyApplications';
+import Interviews from './pages/candidate/Interviews';
+import Resume from './pages/candidate/Resume';
+import CandidateProfile from './pages/candidate/Profile';
+
 import './App.css';
 
 function App() {
@@ -43,10 +65,98 @@ function App() {
             <Route path="/firm-registration" element={<Signup />} />
             <Route path="/candidate-registration" element={<Signup />} />
             
-            {/* Dashboard Routes */}
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/firm-dashboard" element={<FirmDashboard />} />
-            <Route path="/candidate-dashboard" element={<CandidateDashboard />} />
+            {/* Dashboard Routes - Protected */}
+            <Route path="/admin-dashboard" element={
+              <ProtectedRoute requiredUserType="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/firm-dashboard" element={
+              <ProtectedRoute requiredUserType="firm">
+                <FirmDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/candidate-dashboard" element={
+              <ProtectedRoute requiredUserType="candidate">
+                <CandidateDashboard />
+              </ProtectedRoute>
+            } />
+            
+            {/* Admin Routes - Protected */}
+            <Route path="/manage-firms" element={
+              <ProtectedRoute requiredUserType="admin">
+                <ManageFirms />
+              </ProtectedRoute>
+            } />
+            <Route path="/manage-candidates" element={
+              <ProtectedRoute requiredUserType="admin">
+                <ManageCandidates />
+              </ProtectedRoute>
+            } />
+            <Route path="/reports" element={
+              <ProtectedRoute requiredUserType="admin">
+                <Reports />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute requiredUserType="admin">
+                <Settings />
+              </ProtectedRoute>
+            } />
+            
+            {/* Firm Routes - Protected */}
+            <Route path="/clients" element={
+              <ProtectedRoute requiredUserType="firm">
+                <Clients />
+              </ProtectedRoute>
+            } />
+            <Route path="/projects" element={
+              <ProtectedRoute requiredUserType="firm">
+                <Projects />
+              </ProtectedRoute>
+            } />
+            <Route path="/find-candidates" element={
+              <ProtectedRoute requiredUserType="firm">
+                <FindCandidates />
+              </ProtectedRoute>
+            } />
+            <Route path="/billing" element={
+              <ProtectedRoute requiredUserType="firm">
+                <Billing />
+              </ProtectedRoute>
+            } />
+            <Route path="/firm-profile" element={
+              <ProtectedRoute requiredUserType="firm">
+                <FirmProfile />
+              </ProtectedRoute>
+            } />
+            
+            {/* Candidate Routes - Protected */}
+            <Route path="/find-jobs" element={
+              <ProtectedRoute requiredUserType="candidate">
+                <FindJobs />
+              </ProtectedRoute>
+            } />
+            <Route path="/my-applications" element={
+              <ProtectedRoute requiredUserType="candidate">
+                <MyApplications />
+              </ProtectedRoute>
+            } />
+            <Route path="/interviews" element={
+              <ProtectedRoute requiredUserType="candidate">
+                <Interviews />
+              </ProtectedRoute>
+            } />
+            <Route path="/resume" element={
+              <ProtectedRoute requiredUserType="candidate">
+                <Resume />
+              </ProtectedRoute>
+            } />
+            <Route path="/candidate-profile" element={
+              <ProtectedRoute requiredUserType="candidate">
+                <CandidateProfile />
+              </ProtectedRoute>
+            } />
           </Routes>
         </main>
         <Footer />
