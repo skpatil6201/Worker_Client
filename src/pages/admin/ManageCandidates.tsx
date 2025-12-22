@@ -97,6 +97,18 @@ export default function ManageCandidates() {
           <p className="text-gray-600">Review and manage candidate registrations</p>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div className="flex">
+              <div className="text-red-800">
+                <p className="font-medium">Error</p>
+                <p className="text-sm">{error}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Filters */}
         <div className="bg-white p-6 rounded-lg shadow mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
