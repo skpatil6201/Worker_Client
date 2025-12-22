@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import logo from '../assets/logoss.png';
 import { isAuthenticated, getUserData, logout, getUserType } from '../utils/auth';
@@ -10,6 +10,7 @@ export default function Navbar() {
   const [userType, setUserType] = useState<string | null>(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoggedIn(isAuthenticated());
@@ -18,7 +19,11 @@ export default function Navbar() {
   }, [location]);
 
   const handleLogout = () => {
-    logout();
+    logout(navigate);
+    setIsLoggedIn(false);
+    setUserData(null);
+    setUserType(null);
+    setIsOpen(false);
   };
 
   return (
@@ -172,9 +177,6 @@ export default function Navbar() {
                   </Link>
                 </>
               )}
-              >
-                Signup
-              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -267,28 +269,50 @@ export default function Navbar() {
                 >
                   Contact
                 </Link>
-                <Link 
-                  to="/login" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/login' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link 
-                  to="/signup" 
-                  className={`transition font-semibold ${
-                    location.pathname === '/signup' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Signup
-                </Link>
+
+                {/* Login/Logout Section for Mobile */}
+                {isLoggedIn ? (
+                  <>
+                    <Link
+                      to={`/${userType}-dashboard`}
+                      className="transition font-semibold text-blue-600 hover:text-blue-700"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="transition font-semibold text-red-600 hover:text-red-700 text-left"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link 
+                      to="/login" 
+                      className={`transition font-semibold ${
+                        location.pathname === '/login' 
+                          ? 'text-green-600 font-bold' 
+                          : 'text-gray-700 hover:text-green-600'
+                      }`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Login
+                    </Link>
+                    <Link 
+                      to="/signup" 
+                      className={`transition font-semibold ${
+                        location.pathname === '/signup' 
+                          ? 'text-green-600 font-bold' 
+                          : 'text-gray-700 hover:text-green-600'
+                      }`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Signup
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           )}

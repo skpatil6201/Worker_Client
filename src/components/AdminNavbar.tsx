@@ -1,10 +1,17 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '../assets/logoss.png';
+import { logout } from '../utils/auth';
 
 export default function AdminNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(navigate);
+    setIsOpen(false);
+  };
 
   return (
     <nav className="fixed w-full top-0 z-50">
@@ -104,13 +111,13 @@ export default function AdminNavbar() {
                 Settings
               </Link>
 
-              {/* Logout Link */}
-              <Link 
-                to="/" 
+              {/* Logout Button */}
+              <button 
+                onClick={handleLogout}
                 className="transition font-semibold text-sm uppercase text-red-600 hover:text-red-700"
               >
                 Logout
-              </Link>
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -160,40 +167,39 @@ export default function AdminNavbar() {
                   Dashboard
                 </Link>
                 <Link 
-                  to="/admin-dashboard" 
+                  to="/manage-firms" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Manage Firms
                 </Link>
                 <Link 
-                  to="/admin-dashboard" 
+                  to="/manage-candidates" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Manage Candidates
                 </Link>
                 <Link 
-                  to="/admin-dashboard" 
+                  to="/reports" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Reports
                 </Link>
                 <Link 
-                  to="/admin-dashboard" 
+                  to="/settings" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Settings
                 </Link>
-                <Link 
-                  to="/" 
-                  className="transition font-semibold text-red-600 hover:text-red-700"
-                  onClick={() => setIsOpen(false)}
+                <button 
+                  onClick={handleLogout}
+                  className="transition font-semibold text-red-600 hover:text-red-700 text-left"
                 >
                   Logout
-                </Link>
+                </button>
               </div>
             </div>
           )}

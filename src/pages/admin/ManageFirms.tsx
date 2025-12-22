@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import AdminNavbar from "../../components/AdminNavbar";
+import { getAuthHeaders } from "../../utils/auth";
+import { buildApiUrl, API_CONFIG } from "../../config/api";
 
 interface Firm {
   _id: string;
@@ -9,16 +11,14 @@ interface Firm {
   firmType: string;
   status: string;
   createdAt: string;
-  contactPerson: string;
-  phone: string;
-  address: string;
 }
 
 export default function ManageFirms() {
   const [firms, setFirms] = useState<Firm[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   useEffect(() => {
     fetchFirms();
@@ -26,49 +26,48 @@ export default function ManageFirms() {
 
   const fetchFirms = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/firms");
-      const data = await response.json();
-      setFirms(data || []);
+      setError(null);
+      const headers = getAuthHeaders();
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.FIRMS), { headers });
+      
+      if (response.ok) {
+        const result = await response.json();
+        setFirms(result.success ? result.data : []);
+      } else {
+        setError("Failed to fetch firms");
+      }
       setLoading(false);
     } catch (error) {
       console.error("Error fetching firms:", error);
+      setError("Failed to load firms");
       setLoading(false);
     }
   };
 
   const updateFirmStatus = async (firmId: string, status: string) => {
     try {
-      await fetch(`http://localhost:8080/api/firms/${firmId}/status`, {
+      const headers = getAuthHeaders();
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.FIRM_STATUS(firmId)), {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ status })
       });
-      fetchFirms();
-      alert(`Firm ${status} successfully!`);
+
+      if (response.ok) {
+        fetchFirms();
+      } else {
+        alert("Failed to update firm status");
+      }
     } catch (error) {
       console.error("Error updating firm status:", error);
-    }
-  };
-
-  const deleteFirm = async (firmId: string) => {
-    if (window.confirm("Are you sure you want to delete this firm?")) {
-      try {
-        await fetch(`http://localhost:8080/api/firms/${firmId}`, {
-          method: "DELETE"
-        });
-        fetchFirms();
-        alert("Firm deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting firm:", error);
-      }
+      alert("Error updating firm status");
     }
   };
 
   const filteredFirms = firms.filter(firm => {
     const matchesSearch = firm.firmName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         firm.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         firm.registrationNumber.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || firm.status === statusFilter;
+                         firm.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "All" || firm.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -94,7 +93,36 @@ export default function ManageFirms() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Manage Firms</h1>
-          <p className="text-gray-600">Review and manage registered CA firms</p>
+          <p className="text-gray-600">Review and manage firm registrations</p>
+        </div>
+
+        {/* Filters */}
+        <div className="bg-white p-6 rounded-lg shadow mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Search Firms</label>
+              <input
+                type="text"
+                placeholder="Search by firm name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="All">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -104,51 +132,22 @@ export default function ManageFirms() {
             <p className="text-3xl font-bold text-blue-600">{firms.length}</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold text-gray-900">Approved</h3>
-            <p className="text-3xl font-bold text-green-600">
-              {firms.filter(f => f.status === "approved").length}
+            <h3 className="text-lg font-semibold text-gray-900">Pending</h3>
+            <p className="text-3xl font-bold text-yellow-600">
+              {firms.filter(f => f.status === "Pending").length}
             </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold text-gray-900">Pending</h3>
-            <p className="text-3xl font-bold text-yellow-600">
-              {firms.filter(f => f.status === "pending").length}
+            <h3 className="text-lg font-semibold text-gray-900">Approved</h3>
+            <p className="text-3xl font-bold text-green-600">
+              {firms.filter(f => f.status === "Approved").length}
             </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow">
             <h3 className="text-lg font-semibold text-gray-900">Rejected</h3>
             <p className="text-3xl font-bold text-red-600">
-              {firms.filter(f => f.status === "rejected").length}
+              {firms.filter(f => f.status === "Rejected").length}
             </p>
-          </div>
-        </div>
-
-        {/* Search and Filter */}
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Search Firms</label>
-              <input
-                type="text"
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Search by name, email, or registration number..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
-              <select
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-              </select>
-            </div>
           </div>
         </div>
 
@@ -156,7 +155,7 @@ export default function ManageFirms() {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900">
-              Registered Firms ({filteredFirms.length})
+              Firms ({filteredFirms.length})
             </h3>
           </div>
           <div className="overflow-x-auto">
@@ -168,9 +167,6 @@ export default function ManageFirms() {
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Registration
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Contact
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
@@ -187,24 +183,17 @@ export default function ManageFirms() {
                       <div>
                         <div className="text-sm font-medium text-gray-900">{firm.firmName}</div>
                         <div className="text-sm text-gray-500">{firm.email}</div>
-                        <div className="text-sm text-gray-500">{firm.firmType}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">{firm.registrationNumber}</div>
-                      <div className="text-sm text-gray-500">
-                        Registered: {new Date(firm.createdAt).toLocaleDateString()}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{firm.contactPerson || 'N/A'}</div>
-                      <div className="text-sm text-gray-500">{firm.phone || 'N/A'}</div>
+                      <div className="text-sm text-gray-500">{firm.firmType}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        firm.status === "approved" 
+                        firm.status === "Approved" 
                           ? "bg-green-100 text-green-800"
-                          : firm.status === "rejected"
+                          : firm.status === "Rejected"
                           ? "bg-red-100 text-red-800"
                           : "bg-yellow-100 text-yellow-800"
                       }`}>
@@ -213,27 +202,17 @@ export default function ManageFirms() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
-                        {firm.status !== "approved" && (
-                          <button
-                            onClick={() => updateFirmStatus(firm._id, "approved")}
-                            className="text-green-600 hover:text-green-900"
-                          >
-                            Approve
-                          </button>
-                        )}
-                        {firm.status !== "rejected" && (
-                          <button
-                            onClick={() => updateFirmStatus(firm._id, "rejected")}
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            Reject
-                          </button>
-                        )}
                         <button
-                          onClick={() => deleteFirm(firm._id)}
+                          onClick={() => updateFirmStatus(firm._id, "Approved")}
+                          className="text-green-600 hover:text-green-900"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => updateFirmStatus(firm._id, "Rejected")}
                           className="text-red-600 hover:text-red-900"
                         >
-                          Delete
+                          Reject
                         </button>
                       </div>
                     </td>
@@ -243,12 +222,6 @@ export default function ManageFirms() {
             </table>
           </div>
         </div>
-
-        {filteredFirms.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No firms found matching your criteria.</p>
-          </div>
-        )}
       </div>
     </div>
   );

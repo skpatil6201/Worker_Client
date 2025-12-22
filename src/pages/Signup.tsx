@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { buildApiUrl, API_CONFIG } from "../config/api";
 
 interface Partner {
   name: string;
   qualification: string;
   membershipNo: string;
   designation: string;
-  contact: string;
+  contact?: string;
 }
 
 export default function Signup() {
@@ -130,7 +131,7 @@ export default function Signup() {
     let payload = {};
 
     if (formData.userType === "candidate") {
-      endpoint = "http://localhost:8080/api/candidates/register";
+      endpoint = buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_REGISTER);
       payload = {
         fullName: formData.name,
         dateOfBirth: formData.dateOfBirth || "1990-01-01",
@@ -149,7 +150,7 @@ export default function Signup() {
         documents: []
       };
     } else {
-      endpoint = "http://localhost:8080/api/firms/register";
+      endpoint = buildApiUrl(API_CONFIG.ENDPOINTS.FIRM_REGISTER);
       payload = {
         firmName: formData.name,
         registrationNumber: formData.registrationNumber || "REG001",
@@ -190,7 +191,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 mt-20">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
@@ -535,7 +536,7 @@ export default function Signup() {
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold text-gray-800 mb-6">Partners / Directors</h3>
                 
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4">
                   <input
                     type="text"
                     placeholder="Name"
@@ -563,6 +564,13 @@ export default function Signup() {
                     className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     value={currentPartner.designation}
                     onChange={(e) => setCurrentPartner({ ...currentPartner, designation: e.target.value })}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Contact (Optional)"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    value={currentPartner.contact}
+                    onChange={(e) => setCurrentPartner({ ...currentPartner, contact: e.target.value })}
                   />
                   <button
                     type="button"

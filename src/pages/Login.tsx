@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { buildApiUrl, API_CONFIG } from "../config/api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,13 +18,13 @@ export default function Login() {
     let endpoint = "";
     switch (formData.userType) {
       case "admin":
-        endpoint = "http://localhost:8080/api/admins/login";
+        endpoint = buildApiUrl(API_CONFIG.ENDPOINTS.ADMIN_LOGIN);
         break;
       case "firm":
-        endpoint = "http://localhost:8080/api/firms/login";
+        endpoint = buildApiUrl(API_CONFIG.ENDPOINTS.FIRM_LOGIN);
         break;
       case "candidate":
-        endpoint = "http://localhost:8080/api/candidates/login";
+        endpoint = buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_LOGIN);
         break;
     }
 
@@ -79,7 +80,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 mt-28">
       <div className="max-w-md mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
@@ -173,7 +174,7 @@ export default function Login() {
                 {formData.userType === 'admin' && (
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                     <h4 className="text-sm font-semibold text-blue-800 mb-2">Default Admin Credentials:</h4>
-                    <p className="text-sm text-blue-700">Username: <span className="font-mono">admin</span></p>
+                    <p className="text-sm text-blue-700">Username: <span className="font-mono">admin@skassociates.com</span></p>
                     <p className="text-sm text-blue-700">Password: <span className="font-mono">admin123</span></p>
                   </div>
                 )}
