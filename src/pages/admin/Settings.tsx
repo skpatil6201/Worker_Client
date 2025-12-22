@@ -1,109 +1,249 @@
-import AdminNavbar from '../../components/AdminNavbar';
+import { useState } from "react";
+import AdminNavbar from "../../components/AdminNavbar";
 
 export default function Settings() {
+  const [activeTab, setActiveTab] = useState("general");
+  const [settings, setSettings] = useState({
+    siteName: "S.K. Associates",
+    siteDescription: "Your Success, Our Expertise",
+    adminEmail: "admin@skassociates.com",
+    supportEmail: "support@skassociates.com",
+    autoApproval: false,
+    emailNotifications: true,
+    maintenanceMode: false
+  });
+
+  const handleSettingChange = (key: string, value: any) => {
+    setSettings(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const saveSettings = () => {
+    // In a real app, this would save to the backend
+    alert("Settings saved successfully!");
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50">
       <AdminNavbar />
       
-      <div className="pt-32 pb-16">
-        <div className="container mx-auto px-4">
-          {/* Hero Section */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              System Settings
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Configure system preferences and administrative settings
-            </p>
-          </div>
+      <div className="pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+          <p className="text-gray-600">Manage system configuration and preferences</p>
+        </div>
 
-          {/* Settings Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* General Settings */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">General Settings</h3>
-              <p className="text-gray-600 mb-4">System configuration and preferences</p>
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition">
-                Configure
+        {/* Settings Navigation */}
+        <div className="mb-8">
+          <nav className="flex space-x-8">
+            {[
+              { id: "general", label: "General" },
+              { id: "users", label: "User Management" },
+              { id: "notifications", label: "Notifications" },
+              { id: "security", label: "Security" }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === tab.id
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                {tab.label}
               </button>
-            </div>
+            ))}
+          </nav>
+        </div>
 
-            {/* User Management */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                </svg>
+        {/* General Settings */}
+        {activeTab === "general" && (
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">General Settings</h3>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Site Name
+                </label>
+                <input
+                  type="text"
+                  value={settings.siteName}
+                  onChange={(e) => handleSettingChange("siteName", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">User Management</h3>
-              <p className="text-gray-600 mb-4">Manage user roles and permissions</p>
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition">
-                Manage Users
-              </button>
-            </div>
-
-            {/* Security Settings */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Site Description
+                </label>
+                <input
+                  type="text"
+                  value={settings.siteDescription}
+                  onChange={(e) => handleSettingChange("siteDescription", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Security Settings</h3>
-              <p className="text-gray-600 mb-4">Configure security policies and access controls</p>
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition">
-                Security Config
-              </button>
-            </div>
-
-            {/* Email Settings */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Admin Email
+                </label>
+                <input
+                  type="email"
+                  value={settings.adminEmail}
+                  onChange={(e) => handleSettingChange("adminEmail", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Email Settings</h3>
-              <p className="text-gray-600 mb-4">Configure email templates and notifications</p>
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition">
-                Email Config
-              </button>
-            </div>
-
-            {/* Backup & Restore */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-                </svg>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Support Email
+                </label>
+                <input
+                  type="email"
+                  value={settings.supportEmail}
+                  onChange={(e) => handleSettingChange("supportEmail", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Backup & Restore</h3>
-              <p className="text-gray-600 mb-4">Manage system backups and data recovery</p>
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition">
-                Backup Settings
-              </button>
-            </div>
-
-            {/* System Logs */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">System Logs</h3>
-              <p className="text-gray-600 mb-4">View and manage system activity logs</p>
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition">
-                View Logs
-              </button>
             </div>
           </div>
+        )}
+
+        {/* User Management Settings */}
+        {activeTab === "users" && (
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">User Management</h3>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900">Auto Approval</h4>
+                  <p className="text-sm text-gray-500">Automatically approve new registrations</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.autoApproval}
+                    onChange={(e) => handleSettingChange("autoApproval", e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+              <div className="border-t pt-6">
+                <h4 className="text-sm font-medium text-gray-900 mb-4">Registration Requirements</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">Email verification required</span>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">Phone verification required</span>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">Document upload required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Notifications Settings */}
+        {activeTab === "notifications" && (
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">Notification Settings</h3>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900">Email Notifications</h4>
+                  <p className="text-sm text-gray-500">Send email notifications for important events</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.emailNotifications}
+                    onChange={(e) => handleSettingChange("emailNotifications", e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+              <div className="border-t pt-6">
+                <h4 className="text-sm font-medium text-gray-900 mb-4">Notification Types</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">New user registrations</span>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">Status changes</span>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">System alerts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Security Settings */}
+        {activeTab === "security" && (
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">Security Settings</h3>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900">Maintenance Mode</h4>
+                  <p className="text-sm text-gray-500">Temporarily disable public access</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.maintenanceMode}
+                    onChange={(e) => handleSettingChange("maintenanceMode", e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+              <div className="border-t pt-6">
+                <h4 className="text-sm font-medium text-gray-900 mb-4">Security Features</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">Two-factor authentication</span>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">Session timeout</span>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="checkbox" defaultChecked className="mr-3" />
+                    <span className="text-sm text-gray-700">Login attempt limits</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Save Button */}
+        <div className="mt-8 flex justify-end">
+          <button
+            onClick={saveSettings}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Save Settings
+          </button>
         </div>
       </div>
     </div>

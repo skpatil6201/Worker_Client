@@ -1,150 +1,149 @@
-import CandidateNavbar from '../../components/CandidateNavbar';
+import { useState, useEffect } from "react";
+import CandidateNavbar from "../../components/CandidateNavbar";
+import { buildApiUrl, API_CONFIG } from "../../config/api";
+
+interface Job {
+  _id: string;
+  title: string;
+  firmName: string;
+  location: string;
+  salary: string;
+  jobType: string;
+  requirements: string[];
+  description: string;
+  createdAt: string;
+}
 
 export default function FindJobs() {
-  const jobs = [
-    {
-      id: 1,
-      title: 'Senior Auditor',
-      company: 'ABC Corporation',
-      location: 'Mumbai',
-      type: 'Full-time',
-      experience: '3-5 years',
-      salary: '₹8-12 LPA',
-      posted: '2 days ago'
-    },
-    {
-      id: 2,
-      title: 'Tax Consultant',
-      company: 'XYZ Associates',
-      location: 'Delhi',
-      type: 'Contract',
-      experience: '2-4 years',
-      salary: '₹6-10 LPA',
-      posted: '1 week ago'
-    },
-    {
-      id: 3,
-      title: 'Financial Analyst',
-      company: 'Tech Solutions Ltd',
-      location: 'Bangalore',
-      type: 'Full-time',
-      experience: '1-3 years',
-      salary: '₹5-8 LPA',
-      posted: '3 days ago'
-    },
-  ];
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [locationFilter, setLocationFilter] = useState("All");
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.JOBS));
+      if (response.ok) {
+        const result = await response.json();
+        setJobs(result.success ? result.data : []);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+      setLoading(false);
+    }
+  };
+
+  const filteredJobs = jobs.filter(job => {
+    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         job.firmName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         job.requirements.some(req => req.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesLocation = locationFilter === "All" || job.location.toLowerCase().includes(locationFilter.toLowerCase());
+    return matchesSearch && matchesLocation;
+  });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <CandidateNavbar />
+        <div className="pt-32 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading jobs...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50">
       <CandidateNavbar />
-      
-      <div className="pt-32 pb-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              Find Jobs
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover exciting career opportunities in accounting and finance
-            </p>
-          </div>
+      <div className="pt-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Find Jobs</h1>
+          <p className="text-gray-600">Discover opportunities that match your skills</p>
+        </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div className="grid md:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
-                <input 
-                  type="text" 
-                  placeholder="Search jobs..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
-                <select className="w-full border border-gray-300 rounded-lg px-3 py-2">
-                  <option>All Locations</option>
-                  <option>Mumbai</option>
-                  <option>Delhi</option>
-                  <option>Bangalore</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Experience</label>
-                <select className="w-full border border-gray-300 rounded-lg px-3 py-2">
-                  <option>Any Experience</option>
-                  <option>0-2 years</option>
-                  <option>3-5 years</option>
-                  <option>5+ years</option>
-                </select>
-              </div>
-              <div className="flex items-end">
-                <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition">
-                  Search Jobs
-                </button>
-              </div>
+        <div className="bg-white p-6 rounded-lg shadow mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Search Jobs</label>
+              <input
+                type="text"
+                placeholder="Search by title, company, or skills..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
             </div>
-          </div>
-
-          <div className="space-y-6">
-            {jobs.map((job) => (
-              <div key={job.id} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">{job.title}</h3>
-                    <p className="text-lg text-gray-600 mb-1">{job.company}</p>
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
-                      <span className="flex items-center">
-                        <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                        </svg>
-                        {job.location}
-                      </span>
-                      <span>{job.type}</span>
-                      <span>{job.experience}</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-semibold text-green-600">{job.salary}</p>
-                    <p className="text-sm text-gray-500">{job.posted}</p>
-                  </div>
-                </div>
-                
-                <div className="flex justify-between items-center">
-                  <div className="flex space-x-3">
-                    <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
-                      Apply Now
-                    </button>
-                    <button className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition">
-                      Save Job
-                    </button>
-                  </div>
-                  <button className="text-blue-600 hover:text-blue-800 font-medium">
-                    View Details
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6 mt-12">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Total Jobs</h3>
-              <p className="text-3xl font-bold text-blue-600">156</p>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+              <select
+                value={locationFilter}
+                onChange={(e) => setLocationFilter(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="All">All Locations</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Pune">Pune</option>
+                <option value="Delhi">Delhi</option>
+              </select>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">New This Week</h3>
-              <p className="text-3xl font-bold text-green-600">23</p>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Applications</h3>
-              <p className="text-3xl font-bold text-yellow-600">8</p>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Interviews</h3>
-              <p className="text-3xl font-bold text-purple-600">3</p>
+            <div className="flex items-end">
+              <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                Advanced Search
+              </button>
             </div>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 gap-6">
+          {filteredJobs.map((job) => (
+            <div key={job._id} className="bg-white rounded-lg shadow p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{job.title}</h3>
+                  <p className="text-gray-600 mb-1">{job.firmName} • {job.location}</p>
+                  <p className="text-gray-600 mb-1">{job.salary} • {job.jobType}</p>
+                  <p className="text-sm text-gray-500">{new Date(job.createdAt).toLocaleDateString()}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                    Apply Now
+                  </button>
+                  <button className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50">
+                    Save Job
+                  </button>
+                </div>
+              </div>
+              <div className="mb-4">
+                <p className="text-gray-700 text-sm">{job.description}</p>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Required Skills</h4>
+                <div className="flex flex-wrap gap-2">
+                  {job.requirements.map((req, index) => (
+                    <span key={index} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                      {req}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredJobs.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No jobs found matching your criteria.</p>
+          </div>
+        )}
       </div>
     </div>
   );

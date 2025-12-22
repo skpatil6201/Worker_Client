@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AdminNavbar from "../components/AdminNavbar";
 import { getAuthHeaders } from "../utils/auth";
+import { buildApiUrl, API_CONFIG } from "../config/api";
 
 interface Firm {
   _id: string;
@@ -55,14 +56,14 @@ export default function AdminDashboard() {
       const headers = getAuthHeaders();
 
       // Fetch firms
-      const firmsResponse = await fetch("http://localhost:8080/api/firms", { headers });
+      const firmsResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.FIRMS), { headers });
       if (firmsResponse.ok) {
         const firmsResult = await firmsResponse.json();
         setFirms(firmsResult.success ? firmsResult.data : []);
       }
 
       // Fetch candidates
-      const candidatesResponse = await fetch("http://localhost:8080/api/candidates", { headers });
+      const candidatesResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATES), { headers });
       if (candidatesResponse.ok) {
         const candidatesResult = await candidatesResponse.json();
         setCandidates(candidatesResult.success ? candidatesResult.data : []);
@@ -82,7 +83,7 @@ export default function AdminDashboard() {
   const updateFirmStatus = async (firmId: string, status: string) => {
     try {
       const headers = getAuthHeaders();
-      const response = await fetch(`http://localhost:8080/api/firms/${firmId}/status`, {
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.FIRM_STATUS(firmId)), {
         method: "PUT",
         headers,
         body: JSON.stringify({ status })
@@ -102,7 +103,7 @@ export default function AdminDashboard() {
   const updateCandidateStatus = async (candidateId: string, status: string) => {
     try {
       const headers = getAuthHeaders();
-      const response = await fetch(`http://localhost:8080/api/candidates/${candidateId}/status`, {
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_STATUS(candidateId)), {
         method: "PUT",
         headers,
         body: JSON.stringify({ status })
@@ -297,13 +298,13 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
                           <button
-                            onClick={() => updateFirmStatus(firm._id, "approved")}
+                            onClick={() => updateFirmStatus(firm._id, "Approved")}
                             className="text-green-600 hover:text-green-900"
                           >
                             Approve
                           </button>
                           <button
-                            onClick={() => updateFirmStatus(firm._id, "rejected")}
+                            onClick={() => updateFirmStatus(firm._id, "Rejected")}
                             className="text-red-600 hover:text-red-900"
                           >
                             Reject
@@ -363,9 +364,9 @@ export default function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          candidate.status === "approved" 
+                          candidate.status === "Approved" 
                             ? "bg-green-100 text-green-800"
-                            : candidate.status === "rejected"
+                            : candidate.status === "Rejected"
                             ? "bg-red-100 text-red-800"
                             : "bg-yellow-100 text-yellow-800"
                         }`}>
@@ -375,13 +376,13 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
                           <button
-                            onClick={() => updateCandidateStatus(candidate._id, "approved")}
+                            onClick={() => updateCandidateStatus(candidate._id, "Approved")}
                             className="text-green-600 hover:text-green-900"
                           >
                             Approve
                           </button>
                           <button
-                            onClick={() => updateCandidateStatus(candidate._id, "rejected")}
+                            onClick={() => updateCandidateStatus(candidate._id, "Rejected")}
                             className="text-red-600 hover:text-red-900"
                           >
                             Reject

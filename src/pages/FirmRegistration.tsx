@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { buildApiUrl, API_CONFIG } from '../config/api';
 
 interface Partner {
   name: string;
@@ -81,7 +82,7 @@ export default function FirmRegistration() {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://localhost:8080/api/firms/register', {
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.FIRM_REGISTER), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

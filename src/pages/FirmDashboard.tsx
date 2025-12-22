@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import FirmNavbar from "../components/FirmNavbar";
+import { getAuthHeaders } from "../utils/auth";
+import { buildApiUrl, API_CONFIG } from "../config/api";
 
 interface JobPosting {
   _id: string;
@@ -56,15 +58,21 @@ export default function FirmDashboard() {
 
   const fetchData = async () => {
     try {
+      const headers = getAuthHeaders();
+
       // Fetch job postings for this firm
-      const jobsResponse = await fetch("http://localhost:8080/api/jobs/firm/current");
-      const jobsData = await jobsResponse.json();
-      setJobPostings(jobsData || []);
+      const jobsResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.FIRM_JOBS), { headers });
+      if (jobsResponse.ok) {
+        const jobsResult = await jobsResponse.json();
+        setJobPostings(jobsResult.success ? jobsResult.data : []);
+      }
 
       // Fetch applications for this firm's jobs
-      const applicationsResponse = await fetch("http://localhost:8080/api/applications/firm/current");
-      const applicationsData = await applicationsResponse.json();
-      setApplications(applicationsData || []);
+      const applicationsResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.FIRM_APPLICATIONS), { headers });
+      if (applicationsResponse.ok) {
+        const applicationsResult = await applicationsResponse.json();
+        setApplications(applicationsResult.success ? applicationsResult.data : []);
+      }
 
       setLoading(false);
     } catch (error) {
@@ -76,9 +84,10 @@ export default function FirmDashboard() {
   const handleCreateJob = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/api/jobs", {
+      const headers = getAuthHeaders();
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.JOBS), {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           ...newJob,
           requirements: newJob.requirements.split(",").map(req => req.trim())
@@ -97,6 +106,9 @@ export default function FirmDashboard() {
         setShowJobForm(false);
         fetchData();
         alert("Job posted successfully!");
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || "Failed to post job");
       }
     } catch (error) {
       console.error("Error creating job:", error);
@@ -106,7 +118,7 @@ export default function FirmDashboard() {
 
   const updateApplicationStatus = async (applicationId: string, status: string) => {
     try {
-      await fetch(`http://localhost:8080/api/applications/${applicationId}/status`, {
+      await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.APPLICATION_STATUS(applicationId)), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status })

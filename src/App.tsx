@@ -14,8 +14,6 @@ import Signup from './pages/Signup';
 import Blogs from './pages/Blogs';
 import Careers from './pages/Careers';
 import Links from './pages/Links';
-import FirmRegistration from './pages/FirmRegistration';
-import CandidateRegistration from './pages/CandidateRegistration';
 import AdminDashboard from './pages/AdminDashboard';
 import FirmDashboard from './pages/FirmDashboard';
 import CandidateDashboard from './pages/CandidateDashboard';
@@ -31,14 +29,14 @@ import Clients from './pages/firm/Clients';
 import Projects from './pages/firm/Projects';
 import FindCandidates from './pages/firm/FindCandidates';
 import Billing from './pages/firm/Billing';
-import FirmProfile from './pages/firm/Profile';
+import FirmProfile from './pages/firm/FirmProfile';
 
 // Candidate Pages
 import FindJobs from './pages/candidate/FindJobs';
 import MyApplications from './pages/candidate/MyApplications';
 import Interviews from './pages/candidate/Interviews';
 import Resume from './pages/candidate/Resume';
-import CandidateProfile from './pages/candidate/Profile';
+import CandidateProfile from './pages/candidate/CandidateProfile';
 
 import './App.css';
 

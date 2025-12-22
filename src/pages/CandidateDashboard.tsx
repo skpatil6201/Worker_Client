@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import CandidateNavbar from "../components/CandidateNavbar";
+import { getAuthHeaders } from "../utils/auth";
+import { buildApiUrl, API_CONFIG } from "../config/api";
 
 interface JobPosting {
   _id: string;
@@ -48,15 +50,21 @@ export default function CandidateDashboard() {
 
   const fetchData = async () => {
     try {
+      const headers = getAuthHeaders();
+
       // Fetch available job postings
-      const jobsResponse = await fetch("http://localhost:8080/api/jobs/available");
-      const jobsData = await jobsResponse.json();
-      setJobPostings(jobsData || []);
+      const jobsResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.JOBS), { headers });
+      if (jobsResponse.ok) {
+        const jobsResult = await jobsResponse.json();
+        setJobPostings(jobsResult.success ? jobsResult.data : []);
+      }
 
       // Fetch candidate's applications
-      const applicationsResponse = await fetch("http://localhost:8080/api/applications/candidate/current");
-      const applicationsData = await applicationsResponse.json();
-      setMyApplications(applicationsData || []);
+      const applicationsResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_APPLICATIONS), { headers });
+      if (applicationsResponse.ok) {
+        const applicationsResult = await applicationsResponse.json();
+        setMyApplications(applicationsResult.success ? applicationsResult.data : []);
+      }
 
       setLoading(false);
     } catch (error) {
@@ -67,17 +75,19 @@ export default function CandidateDashboard() {
 
   const applyForJob = async (jobId: string) => {
     try {
-      const response = await fetch("http://localhost:8080/api/applications", {
+      const headers = getAuthHeaders();
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.APPLY_JOB(jobId)), {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jobId })
+        headers,
+        body: JSON.stringify({ coverLetter: "" })
       });
 
       if (response.ok) {
         alert("Application submitted successfully!");
         fetchData(); // Refresh data
       } else {
-        alert("Failed to submit application");
+        const errorData = await response.json();
+        alert(errorData.message || "Failed to submit application");
       }
     } catch (error) {
       console.error("Error applying for job:", error);
@@ -87,7 +97,7 @@ export default function CandidateDashboard() {
 
   const withdrawApplication = async (applicationId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/applications/${applicationId}`, {
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.DELETE_APPLICATION(applicationId)), {
         method: "DELETE"
       });
 
@@ -113,10 +123,13 @@ export default function CandidateDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+      <div className="min-h-screen bg-gray-50">
+        <CandidateNavbar />
+        <div className="pt-32 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading dashboard...</p>
+          </div>
         </div>
       </div>
     );
@@ -185,47 +198,52 @@ export default function CandidateDashboard() {
             </div>
 
             {/* Job Listings */}
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredJobs.map((job) => (
-                <div key={job._id} className="bg-white rounded-lg shadow p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
-                      <p className="text-blue-600 font-medium">{job.firmName}</p>
-                      <p className="text-gray-600">{job.location} • {job.jobType}</p>
-                      <p className="text-green-600 font-medium">{job.salary}</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                <div key={job._id} className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+                  <div className="mb-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">{job.title}</h3>
+                      <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 ml-2">
                         {job.status}
                       </span>
-                      <p className="text-xs text-gray-400 mt-1">
-                        Posted {new Date(job.createdAt).toLocaleDateString()}
-                      </p>
                     </div>
+                    <p className="text-blue-600 font-medium text-sm">{job.firmName}</p>
+                    <p className="text-gray-600 text-sm">{job.location} • {job.jobType}</p>
+                    <p className="text-green-600 font-medium text-sm">{job.salary}</p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Posted {new Date(job.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
                   
-                  <p className="text-gray-700 mb-4">{job.description}</p>
+                  <p className="text-gray-700 text-sm mb-4 line-clamp-3">{job.description}</p>
                   
                   <div className="mb-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Requirements:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {job.requirements.map((req, index) => (
-                        <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 text-sm rounded">
+                    <h4 className="font-medium text-gray-900 mb-2 text-sm">Requirements:</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {job.requirements.slice(0, 3).map((req, index) => (
+                        <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
                           {req}
                         </span>
                       ))}
+                      {job.requirements.length > 3 && (
+                        <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded">
+                          +{job.requirements.length - 3} more
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center">
-                    <div className="text-sm text-gray-500">
-                      {job.hasApplied ? "✓ Already Applied" : ""}
-                    </div>
+                  <div className="flex flex-col space-y-2">
+                    {job.hasApplied && (
+                      <div className="text-xs text-green-600 font-medium">
+                        ✓ Already Applied
+                      </div>
+                    )}
                     <button
                       onClick={() => applyForJob(job._id)}
                       disabled={job.hasApplied}
-                      className={`px-6 py-2 rounded-lg font-medium transition ${
+                      className={`w-full py-2 px-4 rounded-lg font-medium text-sm transition ${
                         job.hasApplied
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                           : "bg-blue-600 text-white hover:bg-blue-700"
@@ -238,7 +256,7 @@ export default function CandidateDashboard() {
               ))}
 
               {filteredJobs.length === 0 && (
-                <div className="text-center py-12">
+                <div className="col-span-full text-center py-12">
                   <p className="text-gray-500">No jobs found matching your criteria.</p>
                 </div>
               )}

@@ -1,4 +1,5 @@
 // Authentication utility functions
+import { getApiHeaders } from '../config/api';
 
 export interface UserData {
   _id?: string;
@@ -29,35 +30,31 @@ export const isAuthenticated = (): boolean => {
   return !!(token && userType);
 };
 
-export const logout = (): void => {
+export const logout = (navigate?: (path: string) => void): void => {
   localStorage.removeItem('token');
   localStorage.removeItem('userType');
   localStorage.removeItem('userData');
-  window.location.href = '/';
+  
+  if (navigate) {
+    navigate('/');
+  } else {
+    window.location.href = '/';
+  }
 };
 
-export const getAuthHeaders = () => {
-  const token = getToken();
-  return token ? {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  } : {
-    'Content-Type': 'application/json'
-  };
+export const getAuthHeaders = (): Record<string, string> => {
+  return getApiHeaders(true);
 };
 
-export const redirectToDashboard = (userType: string) => {
-  switch (userType) {
-    case 'admin':
-      window.location.href = '/admin-dashboard';
-      break;
-    case 'firm':
-      window.location.href = '/firm-dashboard';
-      break;
-    case 'candidate':
-      window.location.href = '/candidate-dashboard';
-      break;
-    default:
-      window.location.href = '/';
+export const redirectToDashboard = (userType: string, navigate?: (path: string) => void) => {
+  const path = userType === 'admin' ? '/admin-dashboard' 
+    : userType === 'firm' ? '/firm-dashboard'
+    : userType === 'candidate' ? '/candidate-dashboard'
+    : '/';
+    
+  if (navigate) {
+    navigate(path);
+  } else {
+    window.location.href = path;
   }
 };
