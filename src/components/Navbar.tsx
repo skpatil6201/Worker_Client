@@ -30,8 +30,8 @@ export default function Navbar() {
     <nav className="fixed w-full top-0 z-50 ">
       {/* Top Bar */}
       <div className="bg-slate-800   text-white py-2">
-        <div className="container ml-8 mr-8 mx-auto px-4">
-          <div className="flex items-center justify-between text-sm">
+        <div className="container ml-2 mr-8 mx-auto px-6">
+          <div className="flex items-start justify-between text-sm">
             <div className="flex items-center gap-6">
               <a href="mailto:info.skassociates4@gmail.com" className="flex items-center gap-2 hover:text-green-400 transition">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -65,7 +65,7 @@ export default function Navbar() {
 
       {/* Main Navigation */}
       <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">

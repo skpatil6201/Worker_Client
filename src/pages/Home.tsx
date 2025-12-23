@@ -98,10 +98,9 @@ export default function Home() {
             <h2 className="mb-3 text-center text-2xl font-bold text-gray-900">
               Welcome to S.K. ASSOCIATES
             </h2>
-            <p className="text-center text-base leading-relaxed text-gray-600">
-              A trusted consultancy firm delivering outsourced accounting, auditing, taxation, and financial staffing
-              services across India. Established in 2019 under Shree Kotling Industries, we help businesses grow with
-              accuracy, compliance, and transparency.
+            <p className="text-justify text-base leading-relaxed text-gray-600">
+           S K ASSOCIATES is a professional services firm dedicated to providing highly skilled auditing candidates and end-to-end outsourcing solutions for accounting and Chartered Accountant services.
+With a focus on accuracy, compliance, and efficiency, we help organizations streamline their financial operations and achieve long-term success.
             </p>
           </div>
         </div>
@@ -111,7 +110,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Our Services</h2>
           
           {/* Carousel Container */}
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden ">
             <div 
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
