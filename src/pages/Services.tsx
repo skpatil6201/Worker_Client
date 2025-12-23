@@ -2,14 +2,17 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function Services() {
-  const [expandedCards, setExpandedCards] = useState<number[]>([]);
+  const [selectedService, setSelectedService] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleExpanded = (index: number) => {
-    setExpandedCards(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
+  const openModal = (service) => {
+    setSelectedService(service);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedService(null);
   };
   const services = [
     {
@@ -155,7 +158,7 @@ export default function Services() {
         {/* Services Grid */}
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           {services.map((service, index) => (
-            <div key={index} className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg transition hover:shadow-xl hover:-translate-y-1 flex flex-col min-h-[500px]">
+            <div key={index} className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg transition hover:shadow-xl hover:-translate-y-1 flex flex-col">
               <div className="relative h-56 mb-6 rounded-lg overflow-hidden flex-shrink-0">
                 <img 
                   src={service.image} 
@@ -174,27 +177,12 @@ export default function Services() {
                 {/* Read More Button */}
                 <div className="mb-4">
                   <button
-                    onClick={() => toggleExpanded(index)}
-                    className="text-green-600 hover:text-green-700 font-medium text-sm transition duration-300"
+                    onClick={() => openModal(service)}
+                    className="text-green-600 hover:text-green-700 font-medium text-sm transition duration-300 hover:underline"
                   >
-                    {expandedCards.includes(index) ? 'Show Less' : 'Read More'}
+                    Read More
                   </button>
                 </div>
-
-                {/* Services Details - Only show when expanded */}
-                {expandedCards.includes(index) && (
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-3 text-sm">Services Include:</h4>
-                    <ul className="space-y-2">
-                      {service.details.map((detail, detailIndex) => (
-                        <li key={detailIndex} className="flex items-start">
-                          <span className="text-green-600 mr-2 mt-1 text-xs">•</span>
-                          <span className="text-gray-600 text-xs">{detail}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </div>
               
               <Link
@@ -229,6 +217,77 @@ export default function Services() {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && selectedService && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 rounded-full p-2 transition duration-300"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Modal content */}
+            <div className="p-6">
+              {/* Service image */}
+              <div className="relative h-56 mb-6 rounded-xl overflow-hidden">
+                <img 
+                  src={selectedService.image} 
+                  alt={selectedService.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4">
+                  <h2 className="text-3xl font-bold text-white">{selectedService.title}</h2>
+                </div>
+              </div>
+
+              {/* Service description */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">About This Service</h3>
+                <p className="text-gray-600 leading-relaxed text-base">{selectedService.description}</p>
+              </div>
+
+              {/* Service details */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">Services Include:</h3>
+                <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
+                  {selectedService.details.map((detail, index) => (
+                    <div key={index} className="flex items-start bg-gray-50 p-3 rounded-lg">
+                      <svg className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-gray-700 text-sm font-medium">{detail}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
+                <Link
+                  to="/signup"
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 text-center"
+                  onClick={closeModal}
+                >
+                  Get Started
+                </Link>
+                <button
+                  onClick={closeModal}
+                  className="flex-1 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold py-3 px-6 rounded-lg transition duration-300"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

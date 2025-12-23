@@ -5,13 +5,10 @@ export default function Footer() {
         <div className="grid ml-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
           
-          <div className="text-start">
+          <div className="text-justify">
             <h3 className="text-lg font-semibold mb-4 text-white">ABOUT</h3>
             <p className="text-gray-300 text-sm leading-relaxed">
-              S.K. Associates is a Cunsalatancy Firm in Pune, a professionally managed firm 
-              catering to domestic and international clients with a wide range of services in 
-              domestic and international taxation, regulatory and advisory services, and 
-              cross-border transaction-related services.
+           S K ASSOCIATES is a professional services firm providing specialized auditing Canddidates and comprehensive outsourcing solutions for accounting and Chartered Accountant services. Established in 2019 by Mr. Pradip Ajinath Thorat, the firm is dedicated to delivering high standards of accuracy, regulatory compliance, and operational efficiency. Backed by our parent organization, Shree Kotling Industries, we support businesses in optimizing their financial processes, strengthening governance, and achieving sustainable long-term growth.
             </p>
           </div>
 
