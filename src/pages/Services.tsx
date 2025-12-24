@@ -1,11 +1,19 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  details: string[];
+}
+
 export default function Services() {
-  const [selectedService, setSelectedService] = useState(null);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = (service) => {
+  const openModal = (service: Service) => {
     setSelectedService(service);
     setIsModalOpen(true);
   };
@@ -14,7 +22,7 @@ export default function Services() {
     setIsModalOpen(false);
     setSelectedService(null);
   };
-  const services = [
+  const services: Service[] = [
     {
       id: 'accounting-bookkeeping',
       title: 'Accounting & Bookkeeping',
@@ -257,7 +265,7 @@ export default function Services() {
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Services Include:</h3>
                 <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2">
-                  {selectedService.details.map((detail, index) => (
+                  {selectedService.details.map((detail: string, index: number) => (
                     <div key={index} className="flex items-start bg-gray-50 p-3 rounded-lg">
                       <svg className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
