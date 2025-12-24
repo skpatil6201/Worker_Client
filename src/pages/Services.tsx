@@ -3,7 +3,8 @@ import { useState } from 'react';
 
 type Service = {
   id: string;
-  title: string;
+  title: string; 
+  
   description: string;
   image: string;
   details: string[];
