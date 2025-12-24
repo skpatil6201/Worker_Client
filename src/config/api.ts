@@ -1,7 +1,7 @@
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
-  API_URL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'https://caworker-backend-1.onrender.com',
+  API_URL: import.meta.env.VITE_API_URL || 'https://caworker-backend-1.onrender.com/api',
   
   // API Endpoints
   ENDPOINTS: {
