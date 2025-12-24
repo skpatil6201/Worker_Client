@@ -1,24 +1,24 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-interface Service {
+type Service = {
   id: string;
   title: string;
   description: string;
   image: string;
   details: string[];
-}
+};
 
 export default function Services() {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const openModal = (service: Service) => {
+  const openModal = (service: Service): void => {
     setSelectedService(service);
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsModalOpen(false);
     setSelectedService(null);
   };
@@ -165,7 +165,7 @@ export default function Services() {
       <div className="relative z-10 container mx-auto px-4 py-16">
         {/* Services Grid */}
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-          {services.map((service, index) => (
+          {services.map((service: Service, index: number) => (
             <div key={index} className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg transition hover:shadow-xl hover:-translate-y-1 flex flex-col">
               <div className="relative h-56 mb-6 rounded-lg overflow-hidden flex-shrink-0">
                 <img 
