@@ -1,56 +1,51 @@
+import { Link } from 'react-router-dom';
+
 export default function Footer() {
   return (
     <footer className="bg-slate-800 text-white py-16">
       <div className="container mx-auto px-6">
-        <div className="grid ml-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* About Section */}
-          
-          <div className="text-justify">
+        <div className="grid ml-2 grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-8">
+          {/* About Section - Takes 2 columns */}
+          <div className="text-justify md:col-span-2">
             <h3 className="text-lg font-semibold mb-4 text-white">ABOUT</h3>
             <p className="text-gray-300 text-sm leading-relaxed">
-           S K ASSOCIATES is a professional services firm providing specialized auditing Canddidates and comprehensive outsourcing solutions for accounting and Chartered Accountant services. Established in 2019 by Mr. Pradip Ajinath Thorat, the firm is dedicated to delivering high standards of accuracy, regulatory compliance, and operational efficiency. Backed by our parent organization, Shree Kotling Industries, we support businesses in optimizing their financial processes, strengthening governance, and achieving sustainable long-term growth.
+           S K ASSOCIATES is a professional services firm providing specialized auditing candidates and comprehensive outsourcing solutions for accounting and Chartered Accountant services. Established in 2019 by Mr. Pradip Ajinath Thorat, the firm is dedicated to delivering high standards of accuracy, regulatory compliance, and operational efficiency. Backed by our parent organization, Shree Kotling Industries, we support businesses in optimizing their financial processes, strengthening governance, and achieving sustainable long-term growth.
             </p>
           </div>
 
           {/* Services Section */}
-          
           <div className="text-start">
             <h3 className="text-lg font-semibold mb-4 text-white">SERVICES</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Business Registration
-                </a>
+                <Link to="/services" className="text-gray-300 hover:text-white transition-colors">
+                  Accounting & Bookkeeping
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Company Formation
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/services" className="text-gray-300 hover:text-white transition-colors">
                   Audit & Assurance
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Direct Tax
-                </a>
+                <Link to="/services" className="text-gray-300 hover:text-white transition-colors">
+                  Direct Tax Services
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Corporate Laws
-                </a>
+                <Link to="/services" className="text-gray-300 hover:text-white transition-colors">
+                  Indirect Tax (GST)
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Consultancy
-                </a>
+                <Link to="/services" className="text-gray-300 hover:text-white transition-colors">
+                  Company Law & ROC
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  NRI Tax and Allied Services
-                </a>
+                <Link to="/services" className="text-gray-300 hover:text-white transition-colors">
+                  Virtual CFO Services
+                </Link>
               </li>
             </ul>
           </div>
@@ -58,52 +53,87 @@ export default function Footer() {
           {/* Quick Links Section */}
           <div className="text-start">
             <h3 className="text-lg font-semibold mb-4 text-white">QUICK LINKS</h3>
-            <ul className="space-y-2 text-sm ">
+            <ul className="space-y-2 text-sm">
               <li>
-                <a href="/" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/" className="text-gray-300 hover:text-white transition-colors">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/about" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/about" className="text-gray-300 hover:text-white transition-colors">
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Blogs
-                </a>
+                <Link to="/gallery" className="text-gray-300 hover:text-white transition-colors">
+                  Gallery
+                </Link>
               </li>
               <li>
-                <a href="/contact" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/features" className="text-gray-300 hover:text-white transition-colors">
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">
                   Contact Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Links
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                  Careers
-                </a>
+                <Link to="/blogs" className="text-gray-300 hover:text-white transition-colors">
+                  Blogs
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Head Office Section */}
-          
+          {/* Account Section */}
           <div className="text-start">
-            <h3 className="text-lg font-semibold mb-4 text-white">HEAD OFFICE</h3>
+            <h3 className="text-lg font-semibold mb-4 text-white">ACCOUNT</h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link to="/login" className="text-gray-300 hover:text-white transition-colors">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/signup" className="text-gray-300 hover:text-white transition-colors">
+                  Sign Up
+                </Link>
+              </li>
+              <li>
+                <Link to="/firm-registration" className="text-gray-300 hover:text-white transition-colors">
+                  Firm Registration
+                </Link>
+              </li>
+              <li>
+                <Link to="/candidate-registration" className="text-gray-300 hover:text-white transition-colors">
+                  Candidate Registration
+                </Link>
+              </li>
+              <li>
+                <Link to="/careers" className="text-gray-300 hover:text-white transition-colors">
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link to="/links" className="text-gray-300 hover:text-white transition-colors">
+                  Links
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Info Section */}
+          <div className="text-start">
+            <h3 className="text-lg font-semibold mb-4 text-white">CONTACT INFO</h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
                 <svg className="w-4 h-4 text-gray-300 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
                 </svg>
                 <p className="text-gray-300">
-                 Teerth Technospace,
-Baner, Pune – 411045
+                 Teerth Technospace, Baner, Pune – 411045
                 </p>
               </div>
               
@@ -139,27 +169,11 @@ Baner, Pune – 411045
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-600 mt-12 ml-4  pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-gray-600 mt-12 ml-2  pt-8">
+          <div className="flex justify-center items-center">
             <p className="text-gray-400 text-sm">
               Copyrights © All rights reserved to S.K. Infotech Solutions
             </p>
-            {/* <div className="flex items-center gap-4">
-              <a 
-                href="/contact"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                Get In Touch
-              </a>
-              <a 
-                href="tel:+917875037800"
-                className="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors"
-              >
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-                </svg>
-              </a>
-            </div> */}
           </div>
         </div>
       </div>
