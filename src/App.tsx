@@ -21,6 +21,8 @@ import CandidateDashboard from './pages/CandidateDashboard';
 // Admin Pages
 import ManageFirms from './pages/admin/ManageFirms';
 import ManageCandidates from './pages/admin/ManageCandidates';
+import ManageGallery from './pages/admin/ManageGallery';
+import AdminPanel from './pages/admin/AdminPanel';
 import Reports from './pages/admin/Reports';
 import Settings from './pages/admin/Settings';
 
@@ -81,6 +83,11 @@ function App() {
             } />
             
             {/* Admin Routes - Protected */}
+            <Route path="/admin-panel" element={
+              <ProtectedRoute requiredUserType="admin">
+                <AdminPanel />
+              </ProtectedRoute>
+            } />
             <Route path="/manage-firms" element={
               <ProtectedRoute requiredUserType="admin">
                 <ManageFirms />
@@ -89,6 +96,11 @@ function App() {
             <Route path="/manage-candidates" element={
               <ProtectedRoute requiredUserType="admin">
                 <ManageCandidates />
+              </ProtectedRoute>
+            } />
+            <Route path="/manage-gallery" element={
+              <ProtectedRoute requiredUserType="admin">
+                <ManageGallery />
               </ProtectedRoute>
             } />
             <Route path="/reports" element={

@@ -66,6 +66,17 @@ export default function AdminNavbar() {
               >
                 Dashboard
               </Link>
+
+              <Link 
+                to="/admin-panel" 
+                className={`transition font-semibold text-sm uppercase ${
+                  location.pathname === '/admin-panel' 
+                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                    : 'text-gray-700 hover:text-green-600'
+                }`}
+              >
+                Admin Panel
+              </Link>
               
               <Link 
                 to="/manage-firms" 
@@ -87,6 +98,17 @@ export default function AdminNavbar() {
                 }`}
               >
                 Manage Candidates
+              </Link>
+
+              <Link 
+                to="/manage-gallery" 
+                className={`transition font-semibold text-sm uppercase ${
+                  location.pathname === '/manage-gallery' 
+                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                    : 'text-gray-700 hover:text-green-600'
+                }`}
+              >
+                Manage Gallery
               </Link>
 
               <Link 
@@ -167,6 +189,13 @@ export default function AdminNavbar() {
                   Dashboard
                 </Link>
                 <Link 
+                  to="/admin-panel" 
+                  className="transition font-semibold text-gray-700 hover:text-green-600"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Admin Panel
+                </Link>
+                <Link 
                   to="/manage-firms" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
@@ -179,6 +208,13 @@ export default function AdminNavbar() {
                   onClick={() => setIsOpen(false)}
                 >
                   Manage Candidates
+                </Link>
+                <Link 
+                  to="/manage-gallery" 
+                  className="transition font-semibold text-gray-700 hover:text-green-600"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Manage Gallery
                 </Link>
                 <Link 
                   to="/reports" 
