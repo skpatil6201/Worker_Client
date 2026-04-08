@@ -1,73 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { galleryService, type GalleryImage } from '../services/galleryService';
 
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const images = [
-    {
-      id: 1,
-      src: '/img1.jpeg',
-      title: 'Office Environment',
-      category: 'office',
-      description: 'Our professional office space'
-    },
-    {
-      id: 2,
-      src: '/img1.jpeg',
-      title: 'Team Meeting',
-      category: 'team',
-      description: 'Collaborative team discussions'
-    },
-    {
-      id: 3,
-      src: '/img1.jpeg',
-      title: 'Client Consultation',
-      category: 'client',
-      description: 'Professional client meetings'
-    },
-    {
-      id: 4,
-      src: '/img1.jpeg',
-      title: 'Audit Process',
-      category: 'services',
-      description: 'Professional audit services'
-    },
-    {
-      id: 5,
-      src: '/img1.jpeg',
-      title: 'Tax Planning',
-      category: 'services',
-      description: 'Strategic tax planning sessions'
-    },
-    {
-      id: 6,
-      src: '/img1.jpeg',
-      title: 'Office Reception',
-      category: 'office',
-      description: 'Welcome area for clients'
-    },
-    {
-      id: 7,
-      src: '/img1.jpeg',
-      title: 'Team Collaboration',
-      category: 'team',
-      description: 'Working together for excellence'
-    },
-    {
-      id: 8,
-      src: '/img1.jpeg',
-      title: 'Financial Reporting',
-      category: 'services',
-      description: 'Comprehensive financial analysis'
-    },
-    {
-      id: 9,
-      src: '/img1.jpeg',
-      title: 'Conference Room',
-      category: 'office',
-      description: 'Modern meeting facilities'
+  useEffect(() => {
+    loadGalleryImages();
+  }, []);
+
+  const loadGalleryImages = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      // Only get active images for public gallery
+      const fetchedImages = await galleryService.getAllImages({ isActive: true });
+      setImages(fetchedImages);
+    } catch (err) {
+      setError('Failed to load gallery images');
+      console.error('Error loading gallery images:', err);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
 
 
@@ -96,36 +53,70 @@ export default function Gallery() {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-16">
-        {/* Image Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {images.map((image) => (
-            <div
-              key={image.id}
-              className="group relative overflow-hidden rounded-xl shadow-lg transition hover:shadow-xl hover:-translate-y-1 cursor-pointer"
-              onClick={() => setSelectedImage(image.src)}
-            >
-              <div className="relative h-64">
-                <img
-                  src={image.src}
-                  alt={image.title}
-                  className="w-full h-full object-cover transition duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
-                <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition duration-300">
-                  <h3 className="font-bold text-lg mb-1">{image.title}</h3>
-                  <p className="text-sm text-gray-200">{image.description}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading gallery...</p>
+          </div>
+        )}
 
-        {/* Image Count */}
-        <div className="text-center mt-12">
-          <p className="text-gray-600">
-            Showing {images.length} images
-          </p>
-        </div>
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-12">
+            <div className="text-red-600 text-xl mb-4">⚠️ {error}</div>
+            <button 
+              onClick={loadGalleryImages}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
+        {/* Image Grid */}
+        {!loading && !error && (
+          <>
+            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {images.map((image) => (
+                <div
+                  key={image._id || image.id}
+                  className="group relative overflow-hidden rounded-xl shadow-lg transition hover:shadow-xl hover:-translate-y-1 cursor-pointer"
+                  onClick={() => setSelectedImage(image.src)}
+                >
+                  <div className="relative h-64">
+                    <img
+                      src={image.src}
+                      alt={image.alt || image.title}
+                      className="w-full h-full object-cover transition duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition duration-300">
+                      <h3 className="font-bold text-lg mb-1">{image.title}</h3>
+                      <p className="text-sm text-gray-200">{image.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Image Count */}
+            <div className="text-center mt-12">
+              <p className="text-gray-600">
+                Showing {images.length} images
+              </p>
+            </div>
+
+            {/* Empty State */}
+            {images.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🖼️</div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No images available</h3>
+                <p className="text-gray-500">Gallery images will appear here once they are added.</p>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {/* Modal for enlarged image */}
