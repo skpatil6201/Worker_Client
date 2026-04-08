@@ -187,19 +187,19 @@ With a focus on accuracy, compliance, and efficiency, we help organizations stre
 
         {/* CTA Section */}
         <div className="mx-auto mt-16 max-w-4xl text-center">
-          <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 text-white">
-            <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-            <p className="text-xl mb-6">Join our network of professionals or find the right CA for your business</p>
+          <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">Ready to Get Started?</h2>
+            <p className="text-xl mb-6 text-gray-600">Join our network of professionals or find the right CA for your business</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/signup"
-                className="inline-block bg-white text-green-600 font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105"
+                className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105"
               >
                 Sign Up
               </Link>
               <Link
                 to="/login"
-                className="inline-block border-2 border-white text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-white hover:text-green-600"
+                className="inline-block border-2 border-green-600 text-green-600 font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-green-600 hover:text-white"
               >
                 Login
               </Link>

@@ -112,6 +112,17 @@ export default function AdminNavbar() {
               </Link>
 
               <Link 
+                to="/manage-services" 
+                className={`transition font-semibold text-sm uppercase ${
+                  location.pathname === '/manage-services' 
+                    ? 'text-green-600 border-b-2 border-green-600 pb-1' 
+                    : 'text-gray-700 hover:text-green-600'
+                }`}
+              >
+                Manage Services
+              </Link>
+
+              <Link 
                 to="/reports" 
                 className={`transition font-semibold text-sm uppercase ${
                   location.pathname === '/reports' 
@@ -215,6 +226,13 @@ export default function AdminNavbar() {
                   onClick={() => setIsOpen(false)}
                 >
                   Manage Gallery
+                </Link>
+                <Link 
+                  to="/manage-services" 
+                  className="transition font-semibold text-gray-700 hover:text-green-600"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Manage Services
                 </Link>
                 <Link 
                   to="/reports" 

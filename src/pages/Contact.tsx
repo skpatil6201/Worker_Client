@@ -1,32 +1,6 @@
 import { EnvelopeIcon, PhoneIcon, MapPinIcon, ClockIcon } from "@heroicons/react/24/outline";
-import { useEffect, useRef } from "react";
 
 export default function Contact() {
-  const leftRef = useRef<HTMLDivElement | null>(null);
-  const rightRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    const handleMove = (e: MouseEvent) => {
-      const { clientX: x, clientY: y } = e;
-
-      const parallax = (el: HTMLDivElement | null, force = 14) => {
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        const rx = (x - (r.left + r.width / 2)) / r.width;
-        const ry = (y - (r.top + r.height / 2)) / r.height;
-
-        el.style.transform = `perspective(1200px) rotateX(${-ry * force}deg) rotateY(${rx * force}deg) translateY(-4px) scale(1.02)`;
-      };
-
-      parallax(leftRef.current, 10);
-      parallax(rightRef.current, 10);
-    };
-
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
-  }, []);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 text-gray-800">
@@ -57,8 +31,7 @@ export default function Contact() {
         <div className="grid gap-12 lg:grid-cols-2">
           {/* Contact info card */}
           <div
-            ref={leftRef}
-            className="relative rounded-xl border border-gray-200 bg-white px-10 py-12 shadow-md transition-all duration-500"
+            className="relative rounded-xl border border-gray-200 bg-white px-10 py-12 shadow-md"
           >
             <h2 className="mb-8 text-3xl sm:text-4xl font-bold text-gray-900">
               S.K. ASSOCIATES
@@ -135,8 +108,7 @@ export default function Contact() {
 
           {/* Form card */}
           <div
-            ref={rightRef}
-            className="relative rounded-xl border border-gray-200 bg-white px-10 py-12 shadow-md transition-all duration-500"
+            className="relative rounded-xl border border-gray-200 bg-white px-10 py-12 shadow-md"
           >
             <h2 className="mb-3 text-3xl sm:text-4xl font-bold text-gray-900">
               Send a message

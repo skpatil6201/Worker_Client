@@ -22,6 +22,7 @@ import CandidateDashboard from './pages/CandidateDashboard';
 import ManageFirms from './pages/admin/ManageFirms';
 import ManageCandidates from './pages/admin/ManageCandidates';
 import ManageGallery from './pages/admin/ManageGallery';
+import ManageServices from './pages/admin/ManageServices';
 import AdminPanel from './pages/admin/AdminPanel';
 import Reports from './pages/admin/Reports';
 import Settings from './pages/admin/Settings';
@@ -101,6 +102,11 @@ function App() {
             <Route path="/manage-gallery" element={
               <ProtectedRoute requiredUserType="admin">
                 <ManageGallery />
+              </ProtectedRoute>
+            } />
+            <Route path="/manage-services" element={
+              <ProtectedRoute requiredUserType="admin">
+                <ManageServices />
               </ProtectedRoute>
             } />
             <Route path="/reports" element={
