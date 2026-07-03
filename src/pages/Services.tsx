@@ -30,7 +30,7 @@ export default function Services() {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 text-gray-800">
       {/* Hero Section */}
-      <div className="relative w-full h-64 md:h-80 mt-20">
+      <div className="relative mt-32 h-64 w-full md:h-80">
         <img 
           src="/img1.jpeg" 
           alt="Our Services"
@@ -39,8 +39,8 @@ export default function Services() {
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
-            <p className="text-xl">Comprehensive CA Services for Your Business</p>
+            <h1 className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl">Our Services</h1>
+            <p className="text-lg sm:text-xl">Comprehensive CA Services for Your Business</p>
           </div>
         </div>
       </div>
@@ -51,11 +51,11 @@ export default function Services() {
         <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-indigo-100/50 blur-3xl" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
+      <div className="relative z-10 container mx-auto px-4 py-10 sm:py-16">
         {/* Services Grid */}
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           {services.map((service, index) => (
-            <div key={service._id || index} className="bg-white rounded-xl border border-gray-200 p-6 shadow-lg transition hover:shadow-xl hover:-translate-y-1 flex flex-col">
+            <div key={service._id || index} className="flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-lg transition hover:shadow-xl hover:-translate-y-1 sm:p-6">
               <div className="relative h-56 mb-6 rounded-lg overflow-hidden flex-shrink-0">
                 <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -81,8 +81,8 @@ export default function Services() {
         {/* CTA Section */}
         <div className="mx-auto mt-16 max-w-4xl text-center">
           <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 text-white">
-            <h2 className="text-3xl font-bold mb-4">Need Professional CA Services?</h2>
-            <p className="text-xl mb-6">Contact us today to discuss your requirements and get a customized solution</p>
+            <h2 className="mb-4 text-2xl font-bold sm:text-3xl">Need Professional CA Services?</h2>
+            <p className="mb-6 text-base sm:text-xl">Contact us today to discuss your requirements and get a customized solution</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/signup"
@@ -116,7 +116,7 @@ export default function Services() {
             </button>
 
             {/* Modal content */}
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {/* Service image */}
               <div className="relative h-56 mb-6 rounded-xl overflow-hidden">
                 <img 
@@ -126,7 +126,7 @@ export default function Services() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-4 left-4">
-                  <h2 className="text-3xl font-bold text-white">{selectedService.title}</h2>
+                  <h2 className="text-2xl font-bold text-white sm:text-3xl">{selectedService.title}</h2>
                 </div>
               </div>
 

@@ -27,24 +27,24 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed w-full top-0 z-50 ">
+    <nav className="fixed w-full top-0 z-50">
       {/* Top Bar */}
-      <div className="bg-slate-800   text-white py-2">
-        <div className="container ml-2 mr-8 mx-auto px-6">
-          <div className="flex items-start justify-between text-sm">
-            <div className="flex items-center gap-6">
-              <a href="mailto:info.skassociates4@gmail.com" className="flex items-center gap-2 hover:text-green-400 transition">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+      <div className="bg-slate-800 py-2 text-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 text-[10px] leading-tight sm:text-xs md:text-sm">
+            <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2 sm:gap-x-6">
+              <a href="mailto:info.skassociates4@gmail.com" className="flex min-w-0 items-center gap-2 hover:text-green-400 transition">
+                <svg className="h-3.5 w-3.5 flex-shrink-0 sm:h-4 sm:w-4" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
                 </svg>
-                info.skassociates4@gmail.com
+                <span className="max-w-[150px] truncate sm:max-w-none">info.skassociates4@gmail.com</span>
               </a>
               <a href="tel:+917276469398" className="flex items-center gap-2 hover:text-green-400 transition">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="h-3.5 w-3.5 flex-shrink-0 sm:h-4 sm:w-4" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                 </svg>
-                +91-7276469398 / +91-9730517424
+                <span>+91-7276469398 / +91-9730517424</span>
               </a>
             </div>
             <div className="hidden md:flex items-center gap-4">
@@ -65,14 +65,14 @@ export default function Navbar() {
 
       {/* Main Navigation */}
       <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex h-16 items-center justify-between sm:h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3">
-              <img className='h-16' src={logo} alt="S.K. Associates" />
-              <div className="flex flex-col">
-                <span className="text-2xl font-bold text-gray-800">S.K. ASSOCIATES</span>
-                <p className="text-xs text-gray-600 text-l tracking-wider">Your Success,Our Expertise</p>
+            <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
+              <img className="h-12 flex-shrink-0 sm:h-16" src={logo} alt="S.K. Associates" />
+              <div className="flex min-w-0 flex-col text-left">
+                <span className="truncate text-lg font-bold text-gray-800 sm:text-2xl">S.K. ASSOCIATES</span>
+                <p className="truncate text-[10px] tracking-wider text-gray-600 sm:text-xs">Your Success, Our Expertise</p>
               </div>
             </Link>
             
@@ -182,8 +182,9 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden focus:outline-none text-gray-700"
+              className="ml-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg text-gray-700 transition hover:bg-gray-100 focus:outline-none lg:hidden"
               aria-label="Toggle menu"
+              aria-expanded={isOpen}
             >
               <svg 
                 className="w-6 h-6" 
@@ -212,14 +213,14 @@ export default function Navbar() {
 
           {/* Mobile Menu */}
           {isOpen && (
-            <div className="lg:hidden pb-4 border-t border-gray-100 pt-4">
-              <div className="flex flex-col space-y-3">
+            <div className="max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-gray-100 pb-4 pt-4 lg:hidden">
+              <div className="flex flex-col space-y-1 text-left">
                 <Link 
                   to="/" 
-                  className={`transition font-semibold ${
+                  className={`rounded-lg px-3 py-2 transition font-semibold ${
                     location.pathname === '/' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
+                      ? 'bg-green-50 text-green-600 font-bold' 
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -227,10 +228,10 @@ export default function Navbar() {
                 </Link>
                 <Link 
                   to="/about" 
-                  className={`transition font-semibold ${
+                  className={`rounded-lg px-3 py-2 transition font-semibold ${
                     location.pathname === '/about' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
+                      ? 'bg-green-50 text-green-600 font-bold' 
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -238,10 +239,10 @@ export default function Navbar() {
                 </Link>
                 <Link 
                   to="/services" 
-                  className={`transition font-semibold ${
+                  className={`rounded-lg px-3 py-2 transition font-semibold ${
                     location.pathname === '/services' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
+                      ? 'bg-green-50 text-green-600 font-bold' 
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -249,10 +250,10 @@ export default function Navbar() {
                 </Link>
                 <Link 
                   to="/gallery" 
-                  className={`transition font-semibold ${
+                  className={`rounded-lg px-3 py-2 transition font-semibold ${
                     location.pathname === '/gallery' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
+                      ? 'bg-green-50 text-green-600 font-bold' 
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -260,10 +261,10 @@ export default function Navbar() {
                 </Link>
                 <Link 
                   to="/contact" 
-                  className={`transition font-semibold ${
+                  className={`rounded-lg px-3 py-2 transition font-semibold ${
                     location.pathname === '/contact' 
-                      ? 'text-green-600 font-bold' 
-                      : 'text-gray-700 hover:text-green-600'
+                      ? 'bg-green-50 text-green-600 font-bold' 
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -275,14 +276,14 @@ export default function Navbar() {
                   <>
                     <Link
                       to={`/${userType}-dashboard`}
-                      className="transition font-semibold text-blue-600 hover:text-blue-700"
+                      className="rounded-lg px-3 py-2 font-semibold text-blue-600 transition hover:bg-blue-50 hover:text-blue-700"
                       onClick={() => setIsOpen(false)}
                     >
                       Dashboard
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="transition font-semibold text-red-600 hover:text-red-700 text-left"
+                      className="rounded-lg px-3 py-2 text-left font-semibold text-red-600 transition hover:bg-red-50 hover:text-red-700"
                     >
                       Logout
                     </button>
@@ -291,10 +292,10 @@ export default function Navbar() {
                   <>
                     <Link 
                       to="/login" 
-                      className={`transition font-semibold ${
+                      className={`rounded-lg px-3 py-2 transition font-semibold ${
                         location.pathname === '/login' 
-                          ? 'text-green-600 font-bold' 
-                          : 'text-gray-700 hover:text-green-600'
+                          ? 'bg-green-50 text-green-600 font-bold' 
+                          : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
                       }`}
                       onClick={() => setIsOpen(false)}
                     >
@@ -302,10 +303,10 @@ export default function Navbar() {
                     </Link>
                     <Link 
                       to="/signup" 
-                      className={`transition font-semibold ${
+                      className={`rounded-lg px-3 py-2 transition font-semibold ${
                         location.pathname === '/signup' 
-                          ? 'text-green-600 font-bold' 
-                          : 'text-gray-700 hover:text-green-600'
+                          ? 'bg-green-50 text-green-600 font-bold' 
+                          : 'text-gray-700 hover:bg-gray-50 hover:text-green-600'
                       }`}
                       onClick={() => setIsOpen(false)}
                     >

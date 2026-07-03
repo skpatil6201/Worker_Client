@@ -31,7 +31,7 @@ export default function Gallery() {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 text-gray-800">
       {/* Hero Section */}
-      <div className="relative w-full h-64 md:h-80 mt-20">
+      <div className="relative mt-32 h-64 w-full md:h-80">
         <img 
           src="/img1.jpeg" 
           alt="Gallery"
@@ -40,8 +40,8 @@ export default function Gallery() {
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Gallery</h1>
-            <p className="text-xl">Glimpses of Our Professional Journey</p>
+            <h1 className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl">Gallery</h1>
+            <p className="text-lg sm:text-xl">Glimpses of Our Professional Journey</p>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function Gallery() {
         <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-indigo-100/50 blur-3xl" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
+      <div className="relative z-10 container mx-auto px-4 py-10 sm:py-16">
         {/* Loading State */}
         {loading && (
           <div className="text-center py-12">

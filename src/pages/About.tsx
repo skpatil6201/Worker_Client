@@ -2,7 +2,7 @@ export default function About() {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 text-gray-800">
       {/* Hero Section */}
-      <div className="relative w-full h-64 md:h-80 mt-20">
+      <div className="relative mt-32 h-64 w-full md:h-80">
         <img 
           src="/img1.jpeg" 
           alt="About S.K. Associates"
@@ -11,8 +11,8 @@ export default function About() {
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">About Us</h1>
-            <p className="text-xl">Your Success, Our Expertise</p>
+            <h1 className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl">About Us</h1>
+            <p className="text-lg sm:text-xl">Your Success, Our Expertise</p>
           </div>
         </div>
       </div>
@@ -23,10 +23,10 @@ export default function About() {
         <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-indigo-100/50 blur-3xl" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
+      <div className="relative z-10 container mx-auto px-4 py-10 sm:py-16">
         {/* Welcome Section */}
         <div className="mx-auto mb-16 max-w-3xl">
-          <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 shadow-lg transition hover:shadow-xl hover:-translate-y-1">
+          <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-lg transition hover:shadow-xl hover:-translate-y-1 sm:p-8">
             <h2 className="mb-3 text-center text-2xl font-bold text-gray-900">
               About S.K. ASSOCIATES
             </h2>
@@ -36,7 +36,7 @@ export default function About() {
             </p>
             
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 text-center mt-6 pt-6 border-t border-gray-100">
+            <div className="mt-6 grid grid-cols-1 gap-4 border-t border-gray-100 pt-6 text-center sm:grid-cols-3">
               <div>
                 <p className="text-2xl font-bold text-green-600">2019</p>
                 <p className="text-xs text-gray-500">Year founded</p>

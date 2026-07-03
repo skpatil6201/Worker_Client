@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 text-gray-800">
       {/* Hero Section with Image */}
-      <div className="relative w-full h-96 md:h-[500px] lg:h-[600px] mt-20">
+      <div className="relative mt-32 h-[430px] w-full md:h-[500px] lg:h-[600px]">
         <img 
           src="/img1.jpeg" 
           alt="S.K. Associates - Professional CA Services"
@@ -65,14 +65,14 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white px-4 max-w-4xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+          <div className="max-w-4xl px-4 text-center text-white">
+            <h1 className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
               S.K. ASSOCIATES
             </h1>
-            <h2 className="text-xl md:text-2xl lg:text-3xl mb-6 text-gray-200">
+            <h2 className="mb-5 text-lg text-gray-200 sm:text-xl md:text-2xl lg:text-3xl">
               Your Success, Our Expertise
             </h2>
-            <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+            <p className="mx-auto mb-7 max-w-2xl text-base sm:text-lg md:text-xl">
               Professional CA Services for Your Business Growth
             </p>
             <Link
@@ -91,10 +91,10 @@ export default function Home() {
         <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-indigo-100/50 blur-3xl" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16 lg:py-24">
+      <div className="relative z-10 container mx-auto px-4 py-10 sm:py-16 lg:py-24">
         {/* Welcome Section */}
-        <div className="mx-auto mb-16 max-w-3xl">
-          <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 shadow-lg transition hover:shadow-xl hover:-translate-y-1">
+        <div className="mx-auto mb-12 max-w-3xl sm:mb-16">
+          <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-lg transition hover:shadow-xl hover:-translate-y-1 sm:p-8">
             <h2 className="mb-3 text-center text-2xl font-bold text-gray-900">
               Welcome to S.K. ASSOCIATES
             </h2>
@@ -106,25 +106,25 @@ With a focus on accuracy, compliance, and efficiency, we help organizations stre
         </div>
 
         {/* Services Carousel Section */}
-        <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Our Services</h2>
+        <div className="relative mx-auto max-w-7xl">
+          <h2 className="mb-8 text-center text-2xl font-bold text-gray-900 sm:mb-12 sm:text-3xl">Our Services</h2>
           
           {/* Carousel Container */}
-          <div className="relative overflow-hidden ">
+          <div className="relative overflow-hidden">
             <div 
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {Array.from({ length: totalSlides }).map((_, slideIndex) => (
                 <div key={slideIndex} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-5 gap-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
                     {services.slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide).map((service, index) => (
                       <Link 
                         key={index} 
                         to="/services"
                         className="group relative overflow-hidden rounded-xl shadow-md transition hover:shadow-xl hover:-translate-y-1 cursor-pointer"
                       >
-                        <div className="relative h-48">
+                        <div className="relative h-44 sm:h-48">
                           <img 
                             src={service.image} 
                             alt={service.title}
@@ -159,7 +159,8 @@ With a focus on accuracy, compliance, and efficiency, we help organizations stre
           {/* Navigation Arrows */}
           <button
             onClick={() => setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides)}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 text-gray-800 p-2 rounded-full shadow-lg transition duration-300"
+            className="absolute left-2 top-1/2 hidden -translate-y-1/2 transform rounded-full bg-white bg-opacity-80 p-2 text-gray-800 shadow-lg transition duration-300 hover:bg-opacity-100 sm:block"
+            aria-label="Previous services"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -167,7 +168,8 @@ With a focus on accuracy, compliance, and efficiency, we help organizations stre
           </button>
           <button
             onClick={() => setCurrentIndex((prev) => (prev + 1) % totalSlides)}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 text-gray-800 p-2 rounded-full shadow-lg transition duration-300"
+            className="absolute right-2 top-1/2 hidden -translate-y-1/2 transform rounded-full bg-white bg-opacity-80 p-2 text-gray-800 shadow-lg transition duration-300 hover:bg-opacity-100 sm:block"
+            aria-label="Next services"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -186,10 +188,10 @@ With a focus on accuracy, compliance, and efficiency, we help organizations stre
         </div>
 
         {/* CTA Section */}
-        <div className="mx-auto mt-16 max-w-4xl text-center">
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
-            <h2 className="text-3xl font-bold mb-4 text-gray-900">Ready to Get Started?</h2>
-            <p className="text-xl mb-6 text-gray-600">Join our network of professionals or find the right CA for your business</p>
+        <div className="mx-auto mt-12 max-w-4xl text-center sm:mt-16">
+          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-lg sm:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:text-3xl">Ready to Get Started?</h2>
+            <p className="mb-6 text-base text-gray-600 sm:text-xl">Join our network of professionals or find the right CA for your business</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/signup"
