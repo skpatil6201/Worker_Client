@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import FirmNavbar from "../components/FirmNavbar";
 import { getAuthHeaders, getUserData } from "../utils/auth";
-import { buildApiUrl, API_CONFIG } from "../config/api";
+import { buildApiUrl, buildInterviewApiUrl, API_CONFIG } from "../config/api";
 
 interface JobPosting {
   _id: string;
@@ -221,7 +221,7 @@ export default function FirmDashboard() {
       localStorage.setItem("scheduledInterviews", JSON.stringify([interview, ...existingInterviews]));
     };
 
-    fetch(buildApiUrl(API_CONFIG.ENDPOINTS.INTERVIEWS), {
+    fetch(buildInterviewApiUrl(API_CONFIG.ENDPOINTS.INTERVIEWS), {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(interview)

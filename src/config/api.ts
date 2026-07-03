@@ -2,6 +2,7 @@
 export const API_CONFIG = {
   BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://35.168.62.123:8080',
   API_URL: import.meta.env.VITE_API_URL || 'http://35.168.62.123:8080/api',
+  INTERVIEW_API_URL: import.meta.env.VITE_INTERVIEW_API_URL || 'http://localhost:8081/api',
   
   // API Endpoints
   ENDPOINTS: {
@@ -43,6 +44,10 @@ export const API_CONFIG = {
 // Helper function to build full API URL
 export const buildApiUrl = (endpoint: string): string => {
   return `${API_CONFIG.API_URL}${endpoint}`;
+};
+
+export const buildInterviewApiUrl = (endpoint: string): string => {
+  return `${API_CONFIG.INTERVIEW_API_URL}${endpoint}`;
 };
 
 // Helper function to get API headers with auth

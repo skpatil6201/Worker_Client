@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CandidateNavbar from "../../components/CandidateNavbar";
 import { getAuthHeaders, getUserData } from "../../utils/auth";
-import { API_CONFIG, buildApiUrl } from "../../config/api";
+import { API_CONFIG, buildInterviewApiUrl } from "../../config/api";
 
 interface Interview {
   id: string;
@@ -44,7 +44,7 @@ export default function Interviews() {
         if (candidate?._id || candidate?.id) params.set("candidateId", candidate._id || candidate.id || "");
         if (candidate?.email) params.set("candidateEmail", candidate.email);
 
-        const response = await fetch(`${buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_INTERVIEWS)}?${params.toString()}`, {
+        const response = await fetch(`${buildInterviewApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_INTERVIEWS)}?${params.toString()}`, {
           headers: getAuthHeaders()
         });
 
