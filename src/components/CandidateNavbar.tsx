@@ -46,7 +46,7 @@ export default function CandidateNavbar() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/candidate-dashboard" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <img className='h-16' src={logo} alt="S.K. Associates" />
               <div className="flex flex-col">
                 <span className="text-2xl font-bold text-gray-800">S.K. ASSOCIATES</span>
@@ -57,9 +57,9 @@ export default function CandidateNavbar() {
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-8">
               <Link 
-                to="/candidate-dashboard" 
+                to="/candidate/dashboard" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/candidate-dashboard' 
+                  location.pathname === '/candidate/dashboard' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -68,9 +68,9 @@ export default function CandidateNavbar() {
               </Link>
               
               <Link 
-                to="/find-jobs" 
+                to="/candidate/find-jobs" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/find-jobs' 
+                  location.pathname === '/candidate/find-jobs' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -79,9 +79,9 @@ export default function CandidateNavbar() {
               </Link>
 
               <Link 
-                to="/my-applications" 
+                to="/candidate/my-applications" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/my-applications' 
+                  location.pathname === '/candidate/my-applications' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -90,9 +90,9 @@ export default function CandidateNavbar() {
               </Link>
 
               <Link 
-                to="/interviews" 
+                to="/candidate/interviews" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/interviews' 
+                  location.pathname === '/candidate/interviews' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -101,9 +101,9 @@ export default function CandidateNavbar() {
               </Link>
               
               <Link 
-                to="/resume" 
+                to="/candidate/resume" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/resume' 
+                  location.pathname === '/candidate/resume' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -112,9 +112,9 @@ export default function CandidateNavbar() {
               </Link>
 
               <Link 
-                to="/candidate-profile" 
+                to="/candidate/profile" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/candidate-profile' 
+                  location.pathname === '/candidate/profile' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -167,9 +167,9 @@ export default function CandidateNavbar() {
             <div className="lg:hidden pb-4 border-t border-gray-100 pt-4">
               <div className="flex flex-col space-y-3">
                 <Link 
-                  to="/candidate-dashboard" 
+                  to="/candidate/dashboard" 
                   className={`transition font-semibold ${
-                    location.pathname === '/candidate-dashboard' 
+                    location.pathname === '/candidate/dashboard' 
                       ? 'text-green-600 font-bold' 
                       : 'text-gray-700 hover:text-green-600'
                   }`}
@@ -178,35 +178,35 @@ export default function CandidateNavbar() {
                   Dashboard
                 </Link>
                 <Link 
-                  to="/find-jobs" 
+                  to="/candidate/find-jobs" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Find Jobs
                 </Link>
                 <Link 
-                  to="/my-applications" 
+                  to="/candidate/my-applications" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   My Applications
                 </Link>
                 <Link 
-                  to="/interviews" 
+                  to="/candidate/interviews" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Interviews
                 </Link>
                 <Link 
-                  to="/resume" 
+                  to="/candidate/resume" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Resume
                 </Link>
                 <Link 
-                  to="/candidate-profile" 
+                  to="/candidate/profile" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >

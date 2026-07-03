@@ -59,13 +59,13 @@ export default function Login() {
         // Redirect to appropriate dashboard
         switch (formData.userType) {
           case "admin":
-            navigate('/admin-dashboard');
+            navigate('/admin/dashboard');
             break;
           case "firm":
-            navigate('/firm-dashboard');
+            navigate('/firm/dashboard');
             break;
           case "candidate":
-            navigate('/candidate-dashboard');
+            navigate('/candidate/dashboard');
             break;
         }
       } else {

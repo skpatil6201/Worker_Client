@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ContactWidget from './components/ContactWidget';
@@ -43,17 +43,43 @@ import CandidateProfile from './pages/candidate/CandidateProfile';
 
 import './App.css';
 
-function App() {
+function AppLayout() {
+  const location = useLocation();
+  const isPortalRoute = location.pathname.startsWith('/admin/')
+    || location.pathname.startsWith('/firm/')
+    || location.pathname.startsWith('/candidate/')
+    || [
+      '/admin-dashboard',
+      '/admin-panel',
+      '/manage-firms',
+      '/manage-candidates',
+      '/manage-gallery',
+      '/manage-services',
+      '/reports',
+      '/settings',
+      '/firm-dashboard',
+      '/clients',
+      '/projects',
+      '/find-candidates',
+      '/billing',
+      '/firm-profile',
+      '/candidate-dashboard',
+      '/find-jobs',
+      '/my-applications',
+      '/interviews',
+      '/resume',
+      '/candidate-profile'
+    ].includes(location.pathname);
+
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
+    
+      {!isPortalRoute && <Navbar />}
+
       
-        <Navbar />
 
-        
-
-        <main className="flex-1">
-          <Routes>
+      <main className="flex-1">
+        <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
@@ -71,117 +97,151 @@ function App() {
             <Route path="/candidate-registration" element={<Signup />} />
             
             {/* Dashboard Routes - Protected */}
-            <Route path="/admin-dashboard" element={
+            <Route path="/admin/dashboard" element={
               <ProtectedRoute requiredUserType="admin">
                 <AdminDashboard />
               </ProtectedRoute>
             } />
-            <Route path="/firm-dashboard" element={
+            <Route path="/firm/dashboard" element={
               <ProtectedRoute requiredUserType="firm">
                 <FirmDashboard />
               </ProtectedRoute>
             } />
-            <Route path="/candidate-dashboard" element={
+            <Route path="/candidate/dashboard" element={
               <ProtectedRoute requiredUserType="candidate">
                 <CandidateDashboard />
               </ProtectedRoute>
             } />
             
             {/* Admin Routes - Protected */}
-            <Route path="/admin-panel" element={
+            <Route path="/admin/panel" element={
               <ProtectedRoute requiredUserType="admin">
                 <AdminPanel />
               </ProtectedRoute>
             } />
-            <Route path="/manage-firms" element={
+            <Route path="/admin/manage-firms" element={
               <ProtectedRoute requiredUserType="admin">
                 <ManageFirms />
               </ProtectedRoute>
             } />
-            <Route path="/manage-candidates" element={
+            <Route path="/admin/manage-candidates" element={
               <ProtectedRoute requiredUserType="admin">
                 <ManageCandidates />
               </ProtectedRoute>
             } />
-            <Route path="/manage-gallery" element={
+            <Route path="/admin/manage-gallery" element={
               <ProtectedRoute requiredUserType="admin">
                 <ManageGallery />
               </ProtectedRoute>
             } />
-            <Route path="/manage-services" element={
+            <Route path="/admin/manage-services" element={
               <ProtectedRoute requiredUserType="admin">
                 <ManageServices />
               </ProtectedRoute>
             } />
-            <Route path="/reports" element={
+            <Route path="/admin/reports" element={
               <ProtectedRoute requiredUserType="admin">
                 <Reports />
               </ProtectedRoute>
             } />
-            <Route path="/settings" element={
+            <Route path="/admin/settings" element={
               <ProtectedRoute requiredUserType="admin">
                 <Settings />
               </ProtectedRoute>
             } />
             
             {/* Firm Routes - Protected */}
-            <Route path="/clients" element={
+            <Route path="/firm/clients" element={
               <ProtectedRoute requiredUserType="firm">
                 <Clients />
               </ProtectedRoute>
             } />
-            <Route path="/projects" element={
+            <Route path="/firm/projects" element={
               <ProtectedRoute requiredUserType="firm">
                 <Projects />
               </ProtectedRoute>
             } />
-            <Route path="/find-candidates" element={
+            <Route path="/firm/find-candidates" element={
               <ProtectedRoute requiredUserType="firm">
                 <FindCandidates />
               </ProtectedRoute>
             } />
-            <Route path="/billing" element={
+            <Route path="/firm/billing" element={
               <ProtectedRoute requiredUserType="firm">
                 <Billing />
               </ProtectedRoute>
             } />
-            <Route path="/firm-profile" element={
+            <Route path="/firm/profile" element={
               <ProtectedRoute requiredUserType="firm">
                 <FirmProfile />
               </ProtectedRoute>
             } />
             
             {/* Candidate Routes - Protected */}
-            <Route path="/find-jobs" element={
+            <Route path="/candidate/find-jobs" element={
               <ProtectedRoute requiredUserType="candidate">
                 <FindJobs />
               </ProtectedRoute>
             } />
-            <Route path="/my-applications" element={
+            <Route path="/candidate/my-applications" element={
               <ProtectedRoute requiredUserType="candidate">
                 <MyApplications />
               </ProtectedRoute>
             } />
-            <Route path="/interviews" element={
+            <Route path="/candidate/interviews" element={
               <ProtectedRoute requiredUserType="candidate">
                 <Interviews />
               </ProtectedRoute>
             } />
-            <Route path="/resume" element={
+            <Route path="/candidate/resume" element={
               <ProtectedRoute requiredUserType="candidate">
                 <Resume />
               </ProtectedRoute>
             } />
-            <Route path="/candidate-profile" element={
+            <Route path="/candidate/profile" element={
               <ProtectedRoute requiredUserType="candidate">
                 <CandidateProfile />
               </ProtectedRoute>
             } />
-          </Routes>
-        </main>
-        <Footer />
-        <ContactWidget />
-      </div>
+
+            {/* Backward-compatible redirects for old flat URLs and common misspelling */}
+            <Route path="/admin-dashboard" element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="/admin/dashbord" element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="/admin-panel" element={<Navigate to="/admin/panel" replace />} />
+            <Route path="/manage-firms" element={<Navigate to="/admin/manage-firms" replace />} />
+            <Route path="/manage-candidates" element={<Navigate to="/admin/manage-candidates" replace />} />
+            <Route path="/manage-gallery" element={<Navigate to="/admin/manage-gallery" replace />} />
+            <Route path="/manage-services" element={<Navigate to="/admin/manage-services" replace />} />
+            <Route path="/reports" element={<Navigate to="/admin/reports" replace />} />
+            <Route path="/settings" element={<Navigate to="/admin/settings" replace />} />
+
+            <Route path="/firm-dashboard" element={<Navigate to="/firm/dashboard" replace />} />
+            <Route path="/firm/dashbord" element={<Navigate to="/firm/dashboard" replace />} />
+            <Route path="/clients" element={<Navigate to="/firm/clients" replace />} />
+            <Route path="/projects" element={<Navigate to="/firm/projects" replace />} />
+            <Route path="/find-candidates" element={<Navigate to="/firm/find-candidates" replace />} />
+            <Route path="/billing" element={<Navigate to="/firm/billing" replace />} />
+            <Route path="/firm-profile" element={<Navigate to="/firm/profile" replace />} />
+
+            <Route path="/candidate-dashboard" element={<Navigate to="/candidate/dashboard" replace />} />
+            <Route path="/candidate/dashbord" element={<Navigate to="/candidate/dashboard" replace />} />
+            <Route path="/find-jobs" element={<Navigate to="/candidate/find-jobs" replace />} />
+            <Route path="/my-applications" element={<Navigate to="/candidate/my-applications" replace />} />
+            <Route path="/interviews" element={<Navigate to="/candidate/interviews" replace />} />
+            <Route path="/resume" element={<Navigate to="/candidate/resume" replace />} />
+            <Route path="/candidate-profile" element={<Navigate to="/candidate/profile" replace />} />
+        </Routes>
+      </main>
+      {!isPortalRoute && <Footer />}
+      {!isPortalRoute && <ContactWidget />}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppLayout />
     </Router>
   );
 }

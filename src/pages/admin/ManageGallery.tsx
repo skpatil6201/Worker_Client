@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import AdminNavbar from '../../components/AdminNavbar';
 import { galleryService, type GalleryImage } from '../../services/galleryService';
 
 export default function ManageGallery() {
@@ -114,8 +115,9 @@ export default function ManageGallery() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 mt-32">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50">
+      <AdminNavbar />
+      <div className="container mx-auto px-4 py-8 pt-32">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>

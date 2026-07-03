@@ -46,7 +46,7 @@ export default function FirmNavbar() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/firm-dashboard" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <img className='h-16' src={logo} alt="S.K. Associates" />
               <div className="flex flex-col">
                 <span className="text-2xl font-bold text-gray-800">S.K. ASSOCIATES</span>
@@ -57,9 +57,9 @@ export default function FirmNavbar() {
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-8">
               <Link 
-                to="/firm-dashboard" 
+                to="/firm/dashboard" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/firm-dashboard' 
+                  location.pathname === '/firm/dashboard' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -68,9 +68,9 @@ export default function FirmNavbar() {
               </Link>
               
               <Link 
-                to="/clients" 
+                to="/firm/clients" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/clients' 
+                  location.pathname === '/firm/clients' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -79,9 +79,9 @@ export default function FirmNavbar() {
               </Link>
 
               <Link 
-                to="/projects" 
+                to="/firm/projects" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/projects' 
+                  location.pathname === '/firm/projects' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -90,9 +90,9 @@ export default function FirmNavbar() {
               </Link>
 
               <Link 
-                to="/find-candidates" 
+                to="/firm/find-candidates" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/find-candidates' 
+                  location.pathname === '/firm/find-candidates' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -101,9 +101,9 @@ export default function FirmNavbar() {
               </Link>
               
               <Link 
-                to="/billing" 
+                to="/firm/billing" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/billing' 
+                  location.pathname === '/firm/billing' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -112,9 +112,9 @@ export default function FirmNavbar() {
               </Link>
 
               <Link 
-                to="/firm-profile" 
+                to="/firm/profile" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/firm-profile' 
+                  location.pathname === '/firm/profile' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -167,9 +167,9 @@ export default function FirmNavbar() {
             <div className="lg:hidden pb-4 border-t border-gray-100 pt-4">
               <div className="flex flex-col space-y-3">
                 <Link 
-                  to="/firm-dashboard" 
+                  to="/firm/dashboard" 
                   className={`transition font-semibold ${
-                    location.pathname === '/firm-dashboard' 
+                    location.pathname === '/firm/dashboard' 
                       ? 'text-green-600 font-bold' 
                       : 'text-gray-700 hover:text-green-600'
                   }`}
@@ -178,35 +178,35 @@ export default function FirmNavbar() {
                   Dashboard
                 </Link>
                 <Link 
-                  to="/clients" 
+                  to="/firm/clients" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Clients
                 </Link>
                 <Link 
-                  to="/projects" 
+                  to="/firm/projects" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Projects
                 </Link>
                 <Link 
-                  to="/find-candidates" 
+                  to="/firm/find-candidates" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Find Candidates
                 </Link>
                 <Link 
-                  to="/billing" 
+                  to="/firm/billing" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Billing
                 </Link>
                 <Link 
-                  to="/firm-profile" 
+                  to="/firm/profile" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >

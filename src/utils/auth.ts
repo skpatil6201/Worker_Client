@@ -8,6 +8,19 @@ export interface UserData {
   email: string;
   firmName?: string;
   fullName?: string;
+  mobileNumber?: string;
+  phone?: string;
+  address?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  highestQualification?: string;
+  certifications?: string;
+  yearsOfExperience?: string;
+  currentPreviousEmployer?: string;
+  positionHeld?: string;
+  areasOfExpertise?: string[];
+  softwareProficiency?: string[];
+  otherSoftware?: string;
   role?: string;
 }
 
@@ -47,9 +60,9 @@ export const getAuthHeaders = (): Record<string, string> => {
 };
 
 export const redirectToDashboard = (userType: string, navigate?: (path: string) => void) => {
-  const path = userType === 'admin' ? '/admin-dashboard' 
-    : userType === 'firm' ? '/firm-dashboard'
-    : userType === 'candidate' ? '/candidate-dashboard'
+  const path = userType === 'admin' ? '/admin/dashboard' 
+    : userType === 'firm' ? '/firm/dashboard'
+    : userType === 'candidate' ? '/candidate/dashboard'
     : '/';
     
   if (navigate) {

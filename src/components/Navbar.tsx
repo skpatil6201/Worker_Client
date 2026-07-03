@@ -137,7 +137,7 @@ export default function Navbar() {
               {isLoggedIn ? (
                 <div className="flex items-center space-x-4">
                   <Link
-                    to={`/${userType}-dashboard`}
+                    to={`/${userType}/dashboard`}
                     className="transition font-semibold text-sm uppercase text-blue-600 hover:text-blue-700"
                   >
                     Dashboard
@@ -275,7 +275,7 @@ export default function Navbar() {
                 {isLoggedIn ? (
                   <>
                     <Link
-                      to={`/${userType}-dashboard`}
+                      to={`/${userType}/dashboard`}
                       className="rounded-lg px-3 py-2 font-semibold text-blue-600 transition hover:bg-blue-50 hover:text-blue-700"
                       onClick={() => setIsOpen(false)}
                     >

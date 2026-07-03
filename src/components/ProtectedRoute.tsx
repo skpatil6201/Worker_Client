@@ -27,20 +27,7 @@ export default function ProtectedRoute({ children, requiredUserType }: Protected
         const userType = getUserType();
         if (userType !== requiredUserType) {
           console.log(`Wrong user type. Expected: ${requiredUserType}, Got: ${userType}`);
-          // Wrong user type, redirect to appropriate dashboard
-          switch (userType) {
-            case 'admin':
-              navigate('/admin-dashboard');
-              break;
-            case 'firm':
-              navigate('/firm-dashboard');
-              break;
-            case 'candidate':
-              navigate('/candidate-dashboard');
-              break;
-            default:
-              navigate('/login');
-          }
+          navigate('/login');
           return;
         }
       }

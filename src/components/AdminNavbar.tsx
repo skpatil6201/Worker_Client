@@ -46,7 +46,7 @@ export default function AdminNavbar() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/admin-dashboard" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <img className='h-16' src={logo} alt="S.K. Associates" />
               <div className="flex flex-col">
                 <span className="text-2xl font-bold text-gray-800">S.K. ASSOCIATES</span>
@@ -57,9 +57,9 @@ export default function AdminNavbar() {
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-8">
               <Link 
-                to="/admin-dashboard" 
+                to="/admin/dashboard" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/admin-dashboard' 
+                  location.pathname === '/admin/dashboard' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -68,9 +68,9 @@ export default function AdminNavbar() {
               </Link>
 
               <Link 
-                to="/admin-panel" 
+                to="/admin/panel" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/admin-panel' 
+                  location.pathname === '/admin/panel' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -79,9 +79,9 @@ export default function AdminNavbar() {
               </Link>
               
               <Link 
-                to="/manage-firms" 
+                to="/admin/manage-firms" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/manage-firms' 
+                  location.pathname === '/admin/manage-firms' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -90,9 +90,9 @@ export default function AdminNavbar() {
               </Link>
 
               <Link 
-                to="/manage-candidates" 
+                to="/admin/manage-candidates" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/manage-candidates' 
+                  location.pathname === '/admin/manage-candidates' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -101,9 +101,9 @@ export default function AdminNavbar() {
               </Link>
 
               <Link 
-                to="/manage-gallery" 
+                to="/admin/manage-gallery" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/manage-gallery' 
+                  location.pathname === '/admin/manage-gallery' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -112,9 +112,9 @@ export default function AdminNavbar() {
               </Link>
 
               <Link 
-                to="/manage-services" 
+                to="/admin/manage-services" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/manage-services' 
+                  location.pathname === '/admin/manage-services' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -123,9 +123,9 @@ export default function AdminNavbar() {
               </Link>
 
               <Link 
-                to="/reports" 
+                to="/admin/reports" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/reports' 
+                  location.pathname === '/admin/reports' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -134,9 +134,9 @@ export default function AdminNavbar() {
               </Link>
               
               <Link 
-                to="/settings" 
+                to="/admin/settings" 
                 className={`transition font-semibold text-sm uppercase ${
-                  location.pathname === '/settings' 
+                  location.pathname === '/admin/settings' 
                     ? 'text-green-600 border-b-2 border-green-600 pb-1' 
                     : 'text-gray-700 hover:text-green-600'
                 }`}
@@ -189,9 +189,9 @@ export default function AdminNavbar() {
             <div className="lg:hidden pb-4 border-t border-gray-100 pt-4">
               <div className="flex flex-col space-y-3">
                 <Link 
-                  to="/admin-dashboard" 
+                  to="/admin/dashboard" 
                   className={`transition font-semibold ${
-                    location.pathname === '/admin-dashboard' 
+                    location.pathname === '/admin/dashboard' 
                       ? 'text-green-600 font-bold' 
                       : 'text-gray-700 hover:text-green-600'
                   }`}
@@ -200,49 +200,49 @@ export default function AdminNavbar() {
                   Dashboard
                 </Link>
                 <Link 
-                  to="/admin-panel" 
+                  to="/admin/panel" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Admin Panel
                 </Link>
                 <Link 
-                  to="/manage-firms" 
+                  to="/admin/manage-firms" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Manage Firms
                 </Link>
                 <Link 
-                  to="/manage-candidates" 
+                  to="/admin/manage-candidates" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Manage Candidates
                 </Link>
                 <Link 
-                  to="/manage-gallery" 
+                  to="/admin/manage-gallery" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Manage Gallery
                 </Link>
                 <Link 
-                  to="/manage-services" 
+                  to="/admin/manage-services" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Manage Services
                 </Link>
                 <Link 
-                  to="/reports" 
+                  to="/admin/reports" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >
                   Reports
                 </Link>
                 <Link 
-                  to="/settings" 
+                  to="/admin/settings" 
                   className="transition font-semibold text-gray-700 hover:text-green-600"
                   onClick={() => setIsOpen(false)}
                 >

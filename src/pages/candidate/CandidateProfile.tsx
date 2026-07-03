@@ -1,21 +1,30 @@
 import { useState } from "react";
 import CandidateNavbar from "../../components/CandidateNavbar";
+import { getUserData } from "../../utils/auth";
 
 export default function CandidateProfile() {
+  const candidate = getUserData();
   const [profile, setProfile] = useState({
-    fullName: "John Doe",
-    email: "john.doe@email.com",
-    mobileNumber: "+91-9876543210",
-    dateOfBirth: "1995-05-15",
-    gender: "Male",
-    address: "123 Main Street, Mumbai, Maharashtra",
-    highestQualification: "CA",
-    yearsOfExperience: "5",
+    fullName: candidate?.fullName || candidate?.username || "Candidate Name",
+    email: candidate?.email || "",
+    mobileNumber: candidate?.mobileNumber || candidate?.phone || "",
+    dateOfBirth: candidate?.dateOfBirth || "",
+    gender: candidate?.gender || "Male",
+    address: candidate?.address || "",
+    highestQualification: candidate?.highestQualification || "",
+    yearsOfExperience: candidate?.yearsOfExperience || "",
     currentSalary: "800000",
     expectedSalary: "1200000",
-    skills: ["Tax Planning", "GST", "Income Tax", "Audit"],
+    skills: [
+      ...(candidate?.areasOfExpertise || []),
+      ...(candidate?.softwareProficiency || []),
+      ...(candidate?.otherSoftware ? candidate.otherSoftware.split(",").map(item => item.trim()).filter(Boolean) : [])
+    ],
     languages: ["English", "Hindi", "Marathi"],
-    availability: "Immediate"
+    availability: "Immediate",
+    certifications: candidate?.certifications || "",
+    currentPreviousEmployer: candidate?.currentPreviousEmployer || "",
+    positionHeld: candidate?.positionHeld || ""
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -215,6 +224,36 @@ export default function CandidateProfile() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100"
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Current / Previous Employer</label>
+              <input
+                type="text"
+                value={profile.currentPreviousEmployer}
+                onChange={(e) => setProfile({...profile, currentPreviousEmployer: e.target.value})}
+                disabled={!isEditing}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Position Held</label>
+              <input
+                type="text"
+                value={profile.positionHeld}
+                onChange={(e) => setProfile({...profile, positionHeld: e.target.value})}
+                disabled={!isEditing}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Certifications</label>
+              <input
+                type="text"
+                value={profile.certifications}
+                onChange={(e) => setProfile({...profile, certifications: e.target.value})}
+                disabled={!isEditing}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-100"
+              />
+            </div>
           </div>
         </div>
 
@@ -223,11 +262,15 @@ export default function CandidateProfile() {
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-xl font-semibold text-gray-900 mb-4">Skills</h3>
             <div className="flex flex-wrap gap-2">
-              {profile.skills.map((skill, index) => (
-                <span key={index} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-                  {skill}
-                </span>
-              ))}
+              {profile.skills.length > 0 ? (
+                profile.skills.map((skill, index) => (
+                  <span key={index} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                    {skill}
+                  </span>
+                ))
+              ) : (
+                <p className="text-sm text-gray-500">No skills added yet</p>
+              )}
             </div>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
