@@ -33,6 +33,9 @@ const getApplicationJobId = (application: Application) => {
   return application.jobId?._id || application.jobId?.id || "";
 };
 
+const APPROVED_STATUSES = ["accepted", "approved", "hired"];
+const isApprovedStatus = (status: string) => APPROVED_STATUSES.includes(status.toLowerCase());
+
 export default function CandidateDashboard() {
   const [activeTab, setActiveTab] = useState("jobs");
   const [jobPostings, setJobPostings] = useState<JobPosting[]>([]);
@@ -300,7 +303,7 @@ export default function CandidateDashboard() {
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-bold text-green-600">
-                      {myApplications.filter(app => app.status === "accepted").length}
+                      {myApplications.filter(app => isApprovedStatus(app.status)).length}
                     </p>
                     <p className="text-sm text-gray-500">Accepted</p>
                   </div>
@@ -356,7 +359,7 @@ export default function CandidateDashboard() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            application.status === "accepted" 
+                            isApprovedStatus(application.status) 
                               ? "bg-green-100 text-green-800"
                               : application.status === "rejected"
                               ? "bg-red-100 text-red-800"
@@ -374,8 +377,8 @@ export default function CandidateDashboard() {
                               Withdraw
                             </button>
                           )}
-                          {application.status === "accepted" && (
-                            <span className="text-green-600">Congratulations!</span>
+                          {isApprovedStatus(application.status) && (
+                            <span className="text-green-600">Approved</span>
                           )}
                         </td>
                       </tr>

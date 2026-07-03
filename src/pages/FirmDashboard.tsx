@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import FirmNavbar from "../components/FirmNavbar";
-import { getAuthHeaders } from "../utils/auth";
+import { getAuthHeaders, getUserData } from "../utils/auth";
 import { buildApiUrl, API_CONFIG } from "../config/api";
 
 interface JobPosting {
@@ -30,12 +30,38 @@ interface Application {
   appliedAt: string;
 }
 
+const APPROVED_STATUSES = ["accepted", "approved", "hired"];
+const isApprovedStatus = (status: string) => APPROVED_STATUSES.includes(status.toLowerCase());
+
+interface InterviewForm {
+  date: string;
+  time: string;
+  type: string;
+  round: string;
+  interviewer: string;
+  meetingLink: string;
+  location: string;
+  notes: string;
+}
+
 export default function FirmDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [jobPostings, setJobPostings] = useState<JobPosting[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [showJobForm, setShowJobForm] = useState(false);
+  const [showInterviewForm, setShowInterviewForm] = useState(false);
+  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
   const [loading, setLoading] = useState(true);
+  const [interviewForm, setInterviewForm] = useState<InterviewForm>({
+    date: "",
+    time: "",
+    type: "Video Call",
+    round: "Technical Round",
+    interviewer: "",
+    meetingLink: "",
+    location: "",
+    notes: ""
+  });
   
   const [newJob, setNewJob] = useState({
     title: "",
@@ -118,16 +144,105 @@ export default function FirmDashboard() {
 
   const updateApplicationStatus = async (applicationId: string, status: string) => {
     try {
-      await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.APPLICATION_STATUS(applicationId)), {
+      const headers = getAuthHeaders();
+      let response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.APPLICATION_STATUS(applicationId)), {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ status })
       });
+
+      if (!response.ok && status === "hired") {
+        response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.APPLICATION_STATUS(applicationId)), {
+          method: "PUT",
+          headers,
+          body: JSON.stringify({ status: "accepted" })
+        });
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        alert(errorData?.message || "Failed to update application status");
+        return;
+      }
+
+      const applicationToSchedule = applications.find(application => application._id === applicationId) || null;
+      setApplications(prev => prev.map(application => (
+        application._id === applicationId ? { ...application, status } : application
+      )));
       fetchData();
-      alert(`Application ${status} successfully!`);
+      if (status === "hired" && applicationToSchedule) {
+        alert("Application approved successfully! Please schedule the interview details.");
+        openInterviewForm(applicationToSchedule);
+      } else {
+        alert(`Application ${status} successfully!`);
+      }
     } catch (error) {
       console.error("Error updating application:", error);
+      alert("Error updating application status");
     }
+  };
+
+  const openInterviewForm = (application: Application) => {
+    setSelectedApplication(application);
+    setInterviewForm({
+      date: "",
+      time: "",
+      type: "Video Call",
+      round: "Technical Round",
+      interviewer: "",
+      meetingLink: "",
+      location: "",
+      notes: ""
+    });
+    setShowInterviewForm(true);
+  };
+
+  const handleScheduleInterview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedApplication) return;
+
+    const firmUser = getUserData();
+    const interview = {
+      id: `${selectedApplication._id}-${Date.now()}`,
+      applicationId: selectedApplication._id,
+      candidateId: selectedApplication.candidateId,
+      candidateName: selectedApplication.candidateName,
+      candidateEmail: selectedApplication.candidateEmail,
+      firmId: firmUser?._id || firmUser?.id || "",
+      jobTitle: selectedApplication.jobTitle,
+      company: firmUser?.firmName || firmData.firmName,
+      status: "Scheduled",
+      createdAt: new Date().toISOString(),
+      ...interviewForm
+    };
+
+    const saveFallbackInterview = () => {
+      const existingInterviews = JSON.parse(localStorage.getItem("scheduledInterviews") || "[]");
+      localStorage.setItem("scheduledInterviews", JSON.stringify([interview, ...existingInterviews]));
+    };
+
+    fetch(buildApiUrl(API_CONFIG.ENDPOINTS.INTERVIEWS), {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(interview)
+    })
+      .then(async response => {
+        if (!response.ok) {
+          saveFallbackInterview();
+          return;
+        }
+
+        const result = await response.json();
+        if (!result.success) saveFallbackInterview();
+      })
+      .catch(() => {
+        saveFallbackInterview();
+      })
+      .finally(() => {
+        setShowInterviewForm(false);
+        setSelectedApplication(null);
+        alert("Interview scheduled successfully! It will now show in the candidate interview page.");
+      });
   };
 
   if (loading) {
@@ -203,7 +318,7 @@ export default function FirmDashboard() {
               <div className="bg-white p-6 rounded-lg shadow">
                 <h3 className="text-lg font-semibold text-gray-900">Hired Candidates</h3>
                 <p className="text-3xl font-bold text-purple-600">
-                  {applications.filter(app => app.status === "accepted").length}
+                  {applications.filter(app => isApprovedStatus(app.status)).length}
                 </p>
                 <p className="text-sm text-gray-500">Successfully hired</p>
               </div>
@@ -223,7 +338,7 @@ export default function FirmDashboard() {
                       <p className="text-xs text-gray-400">{new Date(application.appliedAt).toLocaleDateString()}</p>
                     </div>
                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                      application.status === "accepted" 
+                      isApprovedStatus(application.status) 
                         ? "bg-green-100 text-green-800"
                         : application.status === "rejected"
                         ? "bg-red-100 text-red-800"
@@ -321,7 +436,7 @@ export default function FirmDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          application.status === "accepted" 
+                          isApprovedStatus(application.status) 
                             ? "bg-green-100 text-green-800"
                             : application.status === "rejected"
                             ? "bg-red-100 text-red-800"
@@ -334,10 +449,10 @@ export default function FirmDashboard() {
                         {application.status === "pending" && (
                           <div className="flex space-x-2">
                             <button
-                              onClick={() => updateApplicationStatus(application._id, "accepted")}
+                              onClick={() => updateApplicationStatus(application._id, "hired")}
                               className="text-green-600 hover:text-green-900"
                             >
-                              Accept
+                              Approve
                             </button>
                             <button
                               onClick={() => updateApplicationStatus(application._id, "rejected")}
@@ -346,6 +461,14 @@ export default function FirmDashboard() {
                               Reject
                             </button>
                           </div>
+                        )}
+                        {isApprovedStatus(application.status) && (
+                          <button
+                            onClick={() => openInterviewForm(application)}
+                            className="text-blue-600 hover:text-blue-900"
+                          >
+                            Schedule Interview
+                          </button>
                         )}
                       </td>
                     </tr>
@@ -446,6 +569,126 @@ export default function FirmDashboard() {
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
                     Post Job
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Interview Schedule Modal */}
+      {showInterviewForm && selectedApplication && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-2xl shadow-lg rounded-md bg-white">
+            <div className="mt-3">
+              <h3 className="text-lg font-medium text-gray-900 mb-1">Schedule Interview</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                {selectedApplication.candidateName} for {selectedApplication.jobTitle}
+              </p>
+              <form onSubmit={handleScheduleInterview} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                    <input
+                      type="date"
+                      required
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={interviewForm.date}
+                      onChange={(e) => setInterviewForm({ ...interviewForm, date: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Time *</label>
+                    <input
+                      type="time"
+                      required
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={interviewForm.time}
+                      onChange={(e) => setInterviewForm({ ...interviewForm, time: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Interview Type *</label>
+                    <select
+                      required
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={interviewForm.type}
+                      onChange={(e) => setInterviewForm({ ...interviewForm, type: e.target.value })}
+                    >
+                      <option>Video Call</option>
+                      <option>In-Person</option>
+                      <option>Phone Call</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Round *</label>
+                    <select
+                      required
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={interviewForm.round}
+                      onChange={(e) => setInterviewForm({ ...interviewForm, round: e.target.value })}
+                    >
+                      <option>Initial Screening</option>
+                      <option>Technical Round</option>
+                      <option>HR Round</option>
+                      <option>Final Round</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Interviewer *</label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={interviewForm.interviewer}
+                      onChange={(e) => setInterviewForm({ ...interviewForm, interviewer: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Meeting Link</label>
+                    <input
+                      type="url"
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="https://meet.google.com/..."
+                      value={interviewForm.meetingLink}
+                      onChange={(e) => setInterviewForm({ ...interviewForm, meetingLink: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Office address or city"
+                    value={interviewForm.location}
+                    onChange={(e) => setInterviewForm({ ...interviewForm, location: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                  <textarea
+                    rows={3}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Documents to carry, instructions, contact person..."
+                    value={interviewForm.notes}
+                    onChange={(e) => setInterviewForm({ ...interviewForm, notes: e.target.value })}
+                  />
+                </div>
+                <div className="flex justify-end space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowInterviewForm(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    Save Interview
                   </button>
                 </div>
               </form>

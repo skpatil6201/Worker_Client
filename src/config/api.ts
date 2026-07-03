@@ -31,6 +31,12 @@ export const API_CONFIG = {
     APPLY_JOB: (jobId: string) => `/applications/apply/${jobId}`,
     APPLICATION_STATUS: (applicationId: string) => `/applications/${applicationId}/status`,
     DELETE_APPLICATION: (applicationId: string) => `/applications/${applicationId}`,
+
+    // Interview endpoints
+    INTERVIEWS: '/interviews',
+    CANDIDATE_INTERVIEWS: '/interviews/candidate/current',
+    FIRM_INTERVIEWS: '/interviews/firm/current',
+    INTERVIEW_STATUS: (interviewId: string) => `/interviews/${interviewId}/status`,
   }
 };
 

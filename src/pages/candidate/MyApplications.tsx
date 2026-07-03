@@ -7,7 +7,7 @@ interface Application {
   _id: string;
   jobTitle: string;
   firmName: string;
-  status: "pending" | "reviewed" | "shortlisted" | "rejected" | "hired";
+  status: "pending" | "reviewed" | "shortlisted" | "rejected" | "hired" | "accepted" | "approved";
   createdAt: string;
   coverLetter?: string;
 }
@@ -18,7 +18,12 @@ const STATUS_COLORS: Record<string, string> = {
   shortlisted: "bg-purple-100 text-purple-800",
   rejected:    "bg-red-100 text-red-800",
   hired:       "bg-green-100 text-green-800",
+  accepted:    "bg-green-100 text-green-800",
+  approved:    "bg-green-100 text-green-800",
 };
+
+const APPROVED_STATUSES = ["accepted", "approved", "hired"];
+const isApprovedStatus = (status: string) => APPROVED_STATUSES.includes(status.toLowerCase());
 
 export default function MyApplications() {
   const [applications, setApplications] = useState<Application[]>([]);
@@ -76,7 +81,9 @@ export default function MyApplications() {
           </div>
           <div className="bg-white p-6 rounded-lg shadow">
             <h3 className="text-sm font-semibold text-gray-600">Hired</h3>
-            <p className="text-3xl font-bold text-green-600">{count("hired")}</p>
+            <p className="text-3xl font-bold text-green-600">
+              {applications.filter((a) => isApprovedStatus(a.status)).length}
+            </p>
           </div>
         </div>
 
@@ -92,6 +99,8 @@ export default function MyApplications() {
             <option value="pending">Pending</option>
             <option value="reviewed">Reviewed</option>
             <option value="shortlisted">Shortlisted</option>
+            <option value="accepted">Accepted</option>
+            <option value="approved">Approved</option>
             <option value="rejected">Rejected</option>
             <option value="hired">Hired</option>
           </select>
@@ -135,7 +144,7 @@ export default function MyApplications() {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${STATUS_COLORS[app.status] || "bg-gray-100 text-gray-800"}`}>
-                          {app.status}
+                          {isApprovedStatus(app.status) ? "approved" : app.status}
                         </span>
                       </td>
                     </tr>
