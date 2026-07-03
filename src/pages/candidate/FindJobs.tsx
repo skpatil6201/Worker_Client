@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CandidateNavbar from "../../components/CandidateNavbar";
 import { buildApiUrl, API_CONFIG } from "../../config/api";
+import { getAuthHeaders } from "../../utils/auth";
 
 interface Job {
   _id: string;
@@ -12,11 +13,22 @@ interface Job {
   requirements: string[];
   description: string;
   createdAt: string;
+  hasApplied?: boolean;
 }
+
+interface Application {
+  jobId: string | { _id?: string; id?: string };
+}
+
+const getApplicationJobId = (application: Application) => {
+  if (typeof application.jobId === "string") return application.jobId;
+  return application.jobId?._id || application.jobId?.id || "";
+};
 
 export default function FindJobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [applyingJobIds, setApplyingJobIds] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("All");
 
@@ -26,15 +38,53 @@ export default function FindJobs() {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.JOBS));
-      if (response.ok) {
-        const result = await response.json();
-        setJobs(result.success ? result.data : []);
-      }
+      const headers = getAuthHeaders();
+      const [jobsResponse, applicationsResponse] = await Promise.all([
+        fetch(buildApiUrl(API_CONFIG.ENDPOINTS.JOBS), { headers }),
+        fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_APPLICATIONS), { headers })
+      ]);
+
+      const jobsResult = jobsResponse.ok ? await jobsResponse.json() : { success: false, data: [] };
+      const applicationsResult = applicationsResponse.ok ? await applicationsResponse.json() : { success: false, data: [] };
+      const applications = applicationsResult.success ? applicationsResult.data : [];
+      const appliedJobIds = new Set(applications.map(getApplicationJobId).filter(Boolean));
+      const fetchedJobs = jobsResult.success ? jobsResult.data : [];
+
+      setJobs(fetchedJobs.map((job: Job) => ({
+        ...job,
+        hasApplied: job.hasApplied || appliedJobIds.has(job._id)
+      })));
       setLoading(false);
     } catch (error) {
       console.error("Error fetching jobs:", error);
       setLoading(false);
+    }
+  };
+
+  const applyForJob = async (jobId: string) => {
+    try {
+      setApplyingJobIds(prev => [...prev, jobId]);
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.APPLY_JOB(jobId)), {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ coverLetter: "" })
+      });
+
+      if (response.ok) {
+        setJobs(prev => prev.map(job => (
+          job._id === jobId ? { ...job, hasApplied: true } : job
+        )));
+        alert("Application submitted successfully!");
+        fetchJobs();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || "Failed to submit application");
+      }
+    } catch (error) {
+      console.error("Error applying for job:", error);
+      alert("Error submitting application");
+    } finally {
+      setApplyingJobIds(prev => prev.filter(id => id !== jobId));
     }
   };
 
@@ -114,8 +164,16 @@ export default function FindJobs() {
                   <p className="text-sm text-gray-500">{new Date(job.createdAt).toLocaleDateString()}</p>
                 </div>
                 <div className="flex space-x-2">
-                  <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-                    Apply Now
+                  <button
+                    onClick={() => applyForJob(job._id)}
+                    disabled={job.hasApplied || applyingJobIds.includes(job._id)}
+                    className={`px-4 py-2 rounded-lg ${
+                      job.hasApplied
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-green-600 text-white hover:bg-green-700"
+                    }`}
+                  >
+                    {job.hasApplied ? "Applied" : applyingJobIds.includes(job._id) ? "Applying..." : "Apply Now"}
                   </button>
                   <button className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50">
                     Save Job

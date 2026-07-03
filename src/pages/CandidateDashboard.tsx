@@ -20,7 +20,7 @@ interface JobPosting {
 
 interface Application {
   _id: string;
-  jobId: string;
+  jobId: string | { _id?: string; id?: string };
   jobTitle: string;
   firmName: string;
   status: string;
@@ -28,11 +28,17 @@ interface Application {
   updatedAt: string;
 }
 
+const getApplicationJobId = (application: Application) => {
+  if (typeof application.jobId === "string") return application.jobId;
+  return application.jobId?._id || application.jobId?.id || "";
+};
+
 export default function CandidateDashboard() {
   const [activeTab, setActiveTab] = useState("jobs");
   const [jobPostings, setJobPostings] = useState<JobPosting[]>([]);
   const [myApplications, setMyApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const [applyingJobIds, setApplyingJobIds] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
 
@@ -52,19 +58,22 @@ export default function CandidateDashboard() {
     try {
       const headers = getAuthHeaders();
 
-      // Fetch available job postings
-      const jobsResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.JOBS), { headers });
-      if (jobsResponse.ok) {
-        const jobsResult = await jobsResponse.json();
-        setJobPostings(jobsResult.success ? jobsResult.data : []);
-      }
+      const [jobsResponse, applicationsResponse] = await Promise.all([
+        fetch(buildApiUrl(API_CONFIG.ENDPOINTS.JOBS), { headers }),
+        fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_APPLICATIONS), { headers })
+      ]);
 
-      // Fetch candidate's applications
-      const applicationsResponse = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CANDIDATE_APPLICATIONS), { headers });
-      if (applicationsResponse.ok) {
-        const applicationsResult = await applicationsResponse.json();
-        setMyApplications(applicationsResult.success ? applicationsResult.data : []);
-      }
+      const jobsResult = jobsResponse.ok ? await jobsResponse.json() : { success: false, data: [] };
+      const applicationsResult = applicationsResponse.ok ? await applicationsResponse.json() : { success: false, data: [] };
+      const applications = applicationsResult.success ? applicationsResult.data : [];
+      const appliedJobIds = new Set(applications.map(getApplicationJobId).filter(Boolean));
+      const jobs = jobsResult.success ? jobsResult.data : [];
+
+      setMyApplications(applications);
+      setJobPostings(jobs.map((job: JobPosting) => ({
+        ...job,
+        hasApplied: job.hasApplied || appliedJobIds.has(job._id)
+      })));
 
       setLoading(false);
     } catch (error) {
@@ -75,6 +84,7 @@ export default function CandidateDashboard() {
 
   const applyForJob = async (jobId: string) => {
     try {
+      setApplyingJobIds(prev => [...prev, jobId]);
       const headers = getAuthHeaders();
       const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.APPLY_JOB(jobId)), {
         method: "POST",
@@ -83,6 +93,9 @@ export default function CandidateDashboard() {
       });
 
       if (response.ok) {
+        setJobPostings(prev => prev.map(job => (
+          job._id === jobId ? { ...job, hasApplied: true } : job
+        )));
         alert("Application submitted successfully!");
         fetchData(); // Refresh data
       } else {
@@ -92,6 +105,8 @@ export default function CandidateDashboard() {
     } catch (error) {
       console.error("Error applying for job:", error);
       alert("Error submitting application");
+    } finally {
+      setApplyingJobIds(prev => prev.filter(id => id !== jobId));
     }
   };
 
@@ -242,14 +257,14 @@ export default function CandidateDashboard() {
                     )}
                     <button
                       onClick={() => applyForJob(job._id)}
-                      disabled={job.hasApplied}
+                      disabled={job.hasApplied || applyingJobIds.includes(job._id)}
                       className={`w-full py-2 px-4 rounded-lg font-medium text-sm transition ${
                         job.hasApplied
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                           : "bg-blue-600 text-white hover:bg-blue-700"
                       }`}
                     >
-                      {job.hasApplied ? "Applied" : "Apply Now"}
+                      {job.hasApplied ? "Applied" : applyingJobIds.includes(job._id) ? "Applying..." : "Apply Now"}
                     </button>
                   </div>
                 </div>
