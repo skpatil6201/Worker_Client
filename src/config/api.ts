@@ -1,35 +1,8 @@
-const trimTrailingSlash = (url: string): string => url.replace(/\/+$/, '');
-const trimLeadingSlash = (path: string): string => path.replace(/^\/+/, '');
-
-const normalizeApiUrl = (url: string): string => trimTrailingSlash(url);
-const withApiPath = (baseUrl: string): string => {
-  const normalizedBase = trimTrailingSlash(baseUrl);
-  return normalizedBase.endsWith('/api') ? normalizedBase : `${normalizedBase}/api`;
-};
-
-const configuredApiUrl = import.meta.env.VITE_API_URL;
-const configuredBaseUrl = import.meta.env.VITE_API_BASE_URL;
-const defaultBaseUrl = import.meta.env.DEV ? 'http://localhost:8090' : '';
-
-const apiBaseUrl = configuredBaseUrl
-  ? normalizeApiUrl(configuredBaseUrl)
-  : configuredApiUrl
-    ? normalizeApiUrl(configuredApiUrl).replace(/\/api$/, '')
-    : defaultBaseUrl;
-
-const apiUrl = configuredApiUrl
-  ? normalizeApiUrl(configuredApiUrl)
-  : apiBaseUrl
-    ? withApiPath(apiBaseUrl)
-    : '/api';
-
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: apiBaseUrl,
-  API_URL: apiUrl,
-  INTERVIEW_API_URL: import.meta.env.VITE_INTERVIEW_API_URL
-    ? normalizeApiUrl(import.meta.env.VITE_INTERVIEW_API_URL)
-    : apiUrl,
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://35.168.62.123:8080',
+  API_URL: import.meta.env.VITE_API_URL || 'http://35.168.62.123:8080/api',
+  INTERVIEW_API_URL: import.meta.env.VITE_INTERVIEW_API_URL || import.meta.env.VITE_API_URL || 'http://35.168.62.123:8080/api',
   
   // API Endpoints
   ENDPOINTS: {
@@ -70,11 +43,11 @@ export const API_CONFIG = {
 
 // Helper function to build full API URL
 export const buildApiUrl = (endpoint: string): string => {
-  return `${API_CONFIG.API_URL}/${trimLeadingSlash(endpoint)}`;
+  return `${API_CONFIG.API_URL}${endpoint}`;
 };
 
 export const buildInterviewApiUrl = (endpoint: string): string => {
-  return `${API_CONFIG.INTERVIEW_API_URL}/${trimLeadingSlash(endpoint)}`;
+  return `${API_CONFIG.INTERVIEW_API_URL}${endpoint}`;
 };
 
 // Helper function to get API headers with auth
